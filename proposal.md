@@ -72,5 +72,6 @@
         - Click/hover on image to enlarge image 
         - Add ability to like comments on posts
         - Posting image carousels (multiple images at once)
+        - Hashtags
   
 
