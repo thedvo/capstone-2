@@ -1,4 +1,4 @@
-/** Database setup for ig-clone */
+/** Database setup for ig_clone */
 
 const { Client } = require('pg');
 const { getDatabaseUri } = require('./config');

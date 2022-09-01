@@ -1,8 +1,8 @@
--- Contains schema to create tables for our ig-clone database. 
+-- Contains schema to create tables for our ig_clone database. 
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  username VARCHAR(15) UNIQUE NOT NULL, 
+  username VARCHAR(15) UNIQUE NOT NULL,
   password VARCHAR(20) NOT NULL,
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE likes (
   user_id INTEGER NOT NULL
     REFERENCES users ON DELETE CASCADE,
   post_id INTEGER NOT NULL
-    REFERENCES posts ON DELETE CASCADE,
+    REFERENCES posts ON DELETE CASCADE
 );
 
 CREATE TABLE comments (
@@ -37,14 +37,14 @@ CREATE TABLE comments (
   post_id INTEGER NOT NULL
     REFERENCES posts ON DELETE CASCADE,
   comment VARCHAR(100) NOT NULL,
-  date_posted DATETIME NOT NULL
+  date_posted TIMESTAMP NOT NULL
 );
 
 CREATE TABLE follows (
   user_following_id INTEGER NOT NULL
     REFERENCES users ON DELETE CASCADE,
   user_followed_id INTEGER NOT NULL
-    REFERENCES users ON DELETE CASCADE,
+    REFERENCES users ON DELETE CASCADE
 );
 
 -- REFERENCES is used to set up the FOREIGN KEY
