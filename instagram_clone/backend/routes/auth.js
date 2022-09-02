@@ -2,11 +2,13 @@
 
 const express = require('express');
 const jsonschema = require('jsonschema');
+const { BadRequestError } = require('../expressError');
 
-// import schema for login + signup
-// import bad request error from expressError
-// import helper function for creating a token from helpers
-// import User model
+const userAuthSchema = require('../schemas/userAuth.json');
+const userRegisterSchema = require('../schemas/userRegister.json');
+const { createToken } = require('../helpers/token');
+
+const User = require('../models/user');
 
 const router = new express.Router();
 
@@ -20,6 +22,7 @@ router.post('/token', async function (req, res, next) {
 	try {
 		const validator = jsonschema.validate(req.body, userAuthSchema);
 		if (!validator.valid) {
+			// in the case that some of the request body data does not match the json schema, display the error stack
 			const errs = validator.errors.map((e) => e.stack);
 			throw new BadRequestError(errs);
 		}

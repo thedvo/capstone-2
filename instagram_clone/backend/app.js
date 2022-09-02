@@ -26,8 +26,8 @@ app.use(express.json());
 
 // Route Handlers
 app.use('/auth', authRoutes);
-app.use('/users', userRoutes);
-app.use('/posts', postRoutes);
+app.use('/user', userRoutes);
+app.use('/post', postRoutes);
 
 // error handler middleware is placed at the bottom of app file because error handlers will only run if none of the routes match the request being made.
 
