@@ -1,13 +1,16 @@
 /** Routes for Users */
 const express = require('express');
-const jsonschema = require('jsonschema');
 
 const { ensureLoggedIn } = require('../middleware/auth');
 const { BadRequestError } = require('../expressError');
 const { createToken } = require('../helpers/token');
 
 const User = require('../models/user');
+const Post = require('../models/post');
+
+const jsonschema = require('jsonschema');
 const userUpdateSchema = require('../schemas/userUpdate.json');
+const postNewSchema = require('../schemas/postNew.json');
 
 const router = new express.Router();
 
@@ -85,6 +88,26 @@ router.delete('/:username', async function (req, res, next) {
 	}
 });
 
+/** Create a new post
+ * Utilized user_id in parameter to create post linked to current user
+ * Authorization required: login
+ */
+router.post('/:username/create', async function (req, res, next) {
+	try {
+		const validator = jsonschema.validate(req.body, postNewSchema);
+		if (!validator.valid) {
+			const errs = validator.errors.map((e) => e.stack);
+			throw new BadRequestError(errs);
+		}
+		const username = req.params.username;
+		const post = await Post.create(req.body, username);
+		// const post = await Post.create(req.body);
+		return res.status(201).json({ post });
+	} catch (err) {
+		return next(err);
+	}
+});
+
 /** GET / [:username/likes]
  *  Links to a user's likes
  */
@@ -97,13 +120,28 @@ router.delete('/:username', async function (req, res, next) {
  *  Shows list of current user's followers
  */
 
-// follow user
-// unfollow user
+/** POST / [/follow/:follow-id]
+ * Follow a user
+ * */
 
-// like photo
-// unlike photo
+/** POST / [/unfollow/:follow-id]
+ * Unfollow a user
+ * */
 
-// make comment
-// delete comment
+/** POST / [/:post_id/like/]
+ *  Like a post
+ */
+
+/** POST / [/:post_id/unlike/]
+ *  Unlike a post
+ */
+
+/** POST / [/:post_id/comment/]
+ *  Comment on a post
+ */
+
+/** POST / [/:post_id/comment/delete]
+ *  Delete a comment on a post
+ */
 
 module.exports = router;

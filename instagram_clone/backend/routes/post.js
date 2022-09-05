@@ -4,28 +4,10 @@ const { ensureLoggedIn, verifyUserOrAdmin } = require('../middleware/auth');
 
 const Post = require('../models/post');
 
+const jsonschema = require('jsonschema');
 const postNewSchema = require('../schemas/postNew.json');
 const router = express.Router();
 
-/** Create a post
- * Authorization Required: Current logged in user
- * Post should return { id, image_file, caption, date_posted, user_id }
- * */
-router.post('/', ensureLoggedIn, async function (req, res, next) {
-	try {
-		const validator = jsonschema.validate(req.body, postNewSchema);
-		if (!validator.valid) {
-			const errs = validator.errors.map((e) => e.stack);
-			throw new BadRequestError(errs);
-		}
-		const user = res.locals.user;
-		const userId = user.userId;
-		const post = await Post.create(req.body, userId);
-		return res.status(201).json({ post });
-	} catch (err) {
-		return next(err);
-	}
-});
 /** Get all posts
  * Authorization Required: None
  */
@@ -56,7 +38,7 @@ router.get('/:id', async function (req, res, next) {
  * Authorization Required: Admin or Current User
  *
  *  */
-router.delete('/:id', ensureLoggedIn, async function (req, res, next) {
+router.delete('/:id', async function (req, res, next) {
 	try {
 		await Post.remove(req.params.id);
 		return res.json({ deleted: +req.params.id });
@@ -66,3 +48,24 @@ router.delete('/:id', ensureLoggedIn, async function (req, res, next) {
 });
 
 module.exports = router;
+
+// /** Create a post
+//  * Authorization Required: Current logged in user
+//  * Post should return { id, image_file, caption, date_posted, user_id }
+//  * */
+// router.post('/', async function (req, res, next) {
+// 	try {
+// 		const validator = jsonschema.validate(req.body, postNewSchema);
+// 		if (!validator.valid) {
+// 			const errs = validator.errors.map((e) => e.stack);
+// 			throw new BadRequestError(errs);
+// 		}
+// 		// const user = res.locals.user;
+// 		// const userId = user.userId;
+// 		// const post = await Post.create(req.body, userId);
+// 		const post = await Post.create(req.body);
+// 		return res.status(201).json({ post });
+// 	} catch (err) {
+// 		return next(err);
+// 	}
+// });

@@ -1,6 +1,8 @@
 const express = require('express');
 const { NotFoundError } = require('./expressError');
 
+const { authenticateJWT } = require('./middleware/auth');
+
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/post');
@@ -18,6 +20,8 @@ const cors = require('cors');
  Similar to how in Flask, we import Flask and then we call Flask and save that to a variable called app. Define routes using @app.something
  */
 const app = express();
+
+app.use(authenticateJWT);
 
 // place middleware above routes so they can run on every incoming request.
 app.use(cors());

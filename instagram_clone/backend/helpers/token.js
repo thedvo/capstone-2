@@ -10,6 +10,7 @@ function createToken(user) {
 	);
 
 	let payload = {
+		// previously username: user.username
 		userId: user.id,
 		isAdmin: user.isAdmin || false,
 	};
