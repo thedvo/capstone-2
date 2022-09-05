@@ -92,7 +92,7 @@ router.delete('/:username', async function (req, res, next) {
  * Utilized user_id in parameter to create post linked to current user
  * Authorization required: login
  */
-router.post('/:username/create', async function (req, res, next) {
+router.post('/:username/create-post', async function (req, res, next) {
 	try {
 		const validator = jsonschema.validate(req.body, postNewSchema);
 		if (!validator.valid) {
@@ -112,13 +112,40 @@ router.post('/:username/create', async function (req, res, next) {
  *  Links to a user's likes
  */
 
+router.get('/:username/likes', async function (req, res, next) {
+	try {
+		const likes = await User.getUserLikes();
+		return res.json({ likes });
+	} catch (err) {
+		return next(err);
+	}
+});
+
 /** GET / [:username/following]
  *  Shows list of current user's following
  */
 
+router.get('/:username/following', async function (req, res, next) {
+	try {
+		const following = await User.getUserFollowing();
+		return res.json({ following });
+	} catch (err) {
+		return next(err);
+	}
+});
+
 /** GET / [:username/followers]
  *  Shows list of current user's followers
  */
+
+router.get('/:username/followers', async function (req, res, next) {
+	try {
+		const following = await User.getUserFollowers();
+		return res.json({ followers });
+	} catch (err) {
+		return next(err);
+	}
+});
 
 /** POST / [/follow/:follow-id]
  * Follow a user
@@ -127,21 +154,5 @@ router.post('/:username/create', async function (req, res, next) {
 /** POST / [/unfollow/:follow-id]
  * Unfollow a user
  * */
-
-/** POST / [/:post_id/like/]
- *  Like a post
- */
-
-/** POST / [/:post_id/unlike/]
- *  Unlike a post
- */
-
-/** POST / [/:post_id/comment/]
- *  Comment on a post
- */
-
-/** POST / [/:post_id/comment/delete]
- *  Delete a comment on a post
- */
 
 module.exports = router;

@@ -47,6 +47,22 @@ router.delete('/:id', async function (req, res, next) {
 	}
 });
 
+/** POST / [/:post_id/like/]
+ *  Like a post
+ */
+
+/** POST / [/:post_id/unlike/]
+ *  Unlike a post
+ */
+
+/** POST / [/:post_id/comment/]
+ *  Comment on a post
+ */
+
+/** POST / [/:post_id/comment/delete]
+ *  Delete a comment on a post
+ */
+
 module.exports = router;
 
 // /** Create a post
