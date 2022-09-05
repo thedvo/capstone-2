@@ -1,17 +1,68 @@
-/** Routes for Posts */
-
 const express = require('express');
-const jsonschema = require('jsonschema');
+const { BadRequestError } = require('../expressError');
+const { ensureLoggedIn, verifyUserOrAdmin } = require('../middleware/auth');
 
-const router = new express.Router();
+const Post = require('../models/post');
 
-// create a post
-// delete a post
-// get a post
+const postNewSchema = require('../schemas/postNew.json');
+const router = express.Router();
 
-// like post
-// unlike post
-// make comment
-// delete comment
+/** Create a post
+ * Authorization Required: Current logged in user
+ * Post should return { id, image_file, caption, date_posted, user_id }
+ * */
+router.post('/', ensureLoggedIn, async function (req, res, next) {
+	try {
+		const validator = jsonschema.validate(req.body, postNewSchema);
+		if (!validator.valid) {
+			const errs = validator.errors.map((e) => e.stack);
+			throw new BadRequestError(errs);
+		}
+		const user = res.locals.user;
+		const userId = user.userId;
+		const post = await Post.create(req.body, userId);
+		return res.status(201).json({ post });
+	} catch (err) {
+		return next(err);
+	}
+});
+/** Get all posts
+ * Authorization Required: None
+ */
+
+router.get('/', async function (req, res, next) {
+	try {
+		const posts = await Post.findAll();
+		return res.json({ posts });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+/** Get an individual post
+ * Authorization Required: Admin
+ *
+ * */
+router.get('/:id', async function (req, res, next) {
+	try {
+		const post = await Post.get(req.params.id);
+		return res.json({ post });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+/** Delete a post
+ * Authorization Required: Admin or Current User
+ *
+ *  */
+router.delete('/:id', ensureLoggedIn, async function (req, res, next) {
+	try {
+		await Post.remove(req.params.id);
+		return res.json({ deleted: +req.params.id });
+	} catch (err) {
+		return next(err);
+	}
+});
 
 module.exports = router;

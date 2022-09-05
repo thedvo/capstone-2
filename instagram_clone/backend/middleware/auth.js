@@ -43,7 +43,26 @@ function ensureLoggedIn(req, res, next) {
 	}
 }
 
+/** Middleware to use to ensure the correct logged in user or they are an admin */
+
+function verifyUserOrAdmin(req, res, next) {
+	try {
+		// The res.locals is an object that contains the local variables for the response which are scoped to the request only and therefore just available for the views rendered during that request or response cycle.
+
+		// This property is useful while exposing the request-level information such as the request path name, user settings, authenticated user, etc.
+		const user = res.locals.user;
+		// if not user AND admin or the userId matches the userId in the parameter
+		if (!(user && (user.isAdmin || user.userId === req.params.userId))) {
+			throw new UnauthorizedError();
+		}
+		return next();
+	} catch (err) {
+		return next(err);
+	}
+}
+
 module.exports = {
 	authenticateJWT,
 	ensureLoggedIn,
+	verifyUserOrAdmin,
 };

@@ -30,8 +30,7 @@ class User {
                   email,
                   profile_image AS "profileImage",
                   bio,
-                  created_at AS "createdAt",
-                  updated_at AS "updatedAt",
+                  last_modified AS "lastModified",
                   is_admin AS "isAdmin"
            FROM users
            WHERE username = $1`,
@@ -89,7 +88,7 @@ class User {
             email,
             is_admin)
            VALUES ($1, $2, $3, $4, $5, $6)
-           RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
+           RETURNING username, first_name AS "firstName", last_name AS "lastName", email, last_modified, is_admin AS "isAdmin"`,
 			[username, hashedPassword, firstName, lastName, email, isAdmin]
 		);
 
@@ -98,9 +97,31 @@ class User {
 		return user;
 	}
 
+	/** Find all users.
+	 *
+	 * Returns [{ username, first_name, last_name, email, is_admin }, ...]
+	 **/
+
+	static async findAll() {
+		const result = await db.query(
+			`SELECT 
+				  id,
+				  username,
+                  first_name AS "firstName",
+                  last_name AS "lastName",
+                  email,
+				  last_modified,
+                  is_admin AS "isAdmin"
+           FROM users
+           ORDER BY username`
+		);
+
+		return result.rows;
+	}
+
 	/** Given a username, return data about user.
 	 *
-	 * Returns { username, first_name, last_name, is_admin, jobs }
+	 * Returns { username, first_name, last_name, profile_image, bio, is_admin }
 	 *   where jobs is { id, title, company_handle, company_name, state }
 	 *
 	 * Throws NotFoundError if user not found.
@@ -108,16 +129,15 @@ class User {
 
 	static async get(username) {
 		const userRes = await db.query(
-			`SELECT username,
+			`SELECT 
+				  id,
+				  username,
                   password,
                   first_name AS "firstName",
                   last_name AS "lastName",
-                  email,
                   profile_image AS "profileImage",
                   bio,
-                  created_at AS "createdAt",
-                  updated_at AS "updatedAt",
-                  is_admin AS "isAdmin"
+				  last_modified
            FROM users
            WHERE username = $1`,
 			[username]
@@ -126,6 +146,21 @@ class User {
 		const user = userRes.rows[0];
 
 		if (!user) throw new NotFoundError(`No user: ${username}`);
+
+		// query current user's posts
+		const postRes = await db.query(
+			`SELECT 
+				  id,
+				  image_file AS "imageFile",
+				  caption,
+				  date_posted AS "datePosted",
+				  user_id AS "userId"
+			FROM posts
+			WHERE user_id = $1`,
+			[user.id]
+		);
+
+		user.posts = postRes.rows;
 
 		// make another query to Likes table
 		// adds user's likes to the query result object
@@ -170,10 +205,11 @@ class User {
 		// returns set columns string format for the query
 		// return the updated values in an array
 		const { setCols, values } = sqlForPartialUpdate(data, {
-			firstName: 'first_name',
-			lastName: 'last_name',
 			isAdmin: 'is_admin',
 		});
+
+		// firstName: 'first_name',
+		// lastName: 'last_name',
 
 		// makes username the last element to be set in the query
 		const usernameVarIdx = '$' + (values.length + 1);
@@ -182,10 +218,15 @@ class User {
 		const querySql = `UPDATE users 
                       SET ${setCols} 
                       WHERE username = ${usernameVarIdx} 
-                      RETURNING username,
+                      RETURNING 
+					  			id,
+					  			username,
                                 first_name AS "firstName",
                                 last_name AS "lastName",
                                 email,
+								profile_image AS "profileImage",
+								bio,
+								last_modified AS "lastModified",
                                 is_admin AS "isAdmin"`;
 
 		// updates the data by making a query
