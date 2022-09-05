@@ -114,7 +114,8 @@ router.post('/:username/create-post', async function (req, res, next) {
 
 router.get('/:username/likes', async function (req, res, next) {
 	try {
-		const likes = await User.getUserLikes();
+		const username = req.params.username;
+		const likes = await User.getUserLikes(username);
 		return res.json({ likes });
 	} catch (err) {
 		return next(err);
@@ -127,7 +128,8 @@ router.get('/:username/likes', async function (req, res, next) {
 
 router.get('/:username/following', async function (req, res, next) {
 	try {
-		const following = await User.getUserFollowing();
+		const username = req.params.username;
+		const following = await User.getUserFollowing(username);
 		return res.json({ following });
 	} catch (err) {
 		return next(err);
@@ -140,7 +142,8 @@ router.get('/:username/following', async function (req, res, next) {
 
 router.get('/:username/followers', async function (req, res, next) {
 	try {
-		const following = await User.getUserFollowers();
+		const username = req.params.username;
+		const following = await User.getUserFollowers(username);
 		return res.json({ followers });
 	} catch (err) {
 		return next(err);
@@ -151,8 +154,22 @@ router.get('/:username/followers', async function (req, res, next) {
  * Follow a user
  * */
 
+router.post('/:username/follow', async function (req, res, next) {
+	try {
+	} catch (err) {
+		return next(err);
+	}
+});
+
 /** POST / [/unfollow/:follow-id]
  * Unfollow a user
  * */
+
+router.post('/:username/unfollow', async function (req, res, next) {
+	try {
+	} catch (err) {
+		return next(err);
+	}
+});
 
 module.exports = router;

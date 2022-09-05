@@ -6,6 +6,7 @@ const {
 	NotFoundError,
 	BadRequestError,
 	UnauthorizedError,
+	ExpressError,
 } = require('../expressError');
 
 const { BCRYPT_WORK_FACTOR } = require('../config');
@@ -257,6 +258,129 @@ class User {
 
 		if (!user) throw new NotFoundError(`No user: ${username}`);
 	}
+
+	/** Get a user's 'likes'
+	 *
+	 * Will be used to display a user's liked posts
+	 */
+	static async getUserLikes(username) {
+		const userResult = await db.query(
+			`SELECT 
+				id,
+				username
+			FROM users
+			WHERE username = $1`,
+			[username]
+		);
+		const userId = userResult.rows[0].id;
+
+		const likeResult = await db.query(
+			`
+				 SELECT p.id AS "postId",
+                        p.image_file,
+                        p.caption,
+						p.user_id AS "poster_id",
+						u.id AS "id_of_like",
+                        u.username AS "username_of_like"
+                 FROM posts AS p
+                 LEFT JOIN likes AS l 
+				 ON p.id = l.post_id
+				 LEFT JOIN users AS u
+				 ON u.id = l.user_id
+				 WHERE u.id = $1`,
+			[userId]
+		);
+
+		if (likeResult.rows.length === 0) {
+			throw new ExpressError(`User: ${username} has no likes.`);
+		}
+
+		return likeResult.rows;
+	}
+
+	/** Get a user's 'following'
+	 *
+	 * Will be used to display a list of users which the current user follows
+	 */
+	static async getUserFollowing(username) {
+		const userResult = await db.query(
+			`SELECT 
+				id,
+				username
+			FROM users
+			WHERE username = $1`,
+			[username]
+		);
+		const userId = userResult.rows[0].id;
+
+		let result = await db.query(
+			`
+		SELECT 
+			u.id,
+			u.username,
+			f.user_followed_id
+		FROM users AS u
+		LEFT JOIN follows AS f
+		ON u.id = f.user_following_id
+		WHERE f.user_following_id = $1`,
+			[userId]
+		);
+
+		if (result.rows.length === 0) {
+			throw new ExpressError(
+				`User: ${username} is currently not following anyone.`
+			);
+		}
+
+		return result.rows;
+	}
+
+	/** Get a user's 'followers'
+	 *
+	 * Will be used to display a list of users who follow the current user
+	 */
+	static async getUserFollowers(username) {
+		const userResult = await db.query(
+			`SELECT 
+				id,
+				username
+			FROM users
+			WHERE username = $1`,
+			[username]
+		);
+		const userId = userResult.rows[0].id;
+
+		let result = await db.query(
+			`
+		SELECT 
+			u.id,
+			u.username,
+			f.user_following_id
+		FROM users AS u
+		LEFT JOIN follows AS f
+		ON u.id = f.user_followed_id
+		WHERE f.user_followed_id = $1`,
+			[userId]
+		);
+
+		if (result.rows.length === 0) {
+			throw new ExpressError(`User: ${username} has no followers.`);
+		}
+
+		return result.rows;
+	}
+
+	/** Follow a user
+	 *
+	 *
+	 */
+	static async followUser(username) {}
+
+	/** Unfollow a user
+	 *
+	 *
+	 */
+	static async unfollowUser(username) {}
 }
 
 module.exports = User;
