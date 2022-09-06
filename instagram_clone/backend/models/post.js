@@ -43,16 +43,22 @@ class Post {
 
 	static async findAll() {
 		const result = await db.query(
-			`SELECT id,
-                  image_file AS "imageFile",
-                  caption,
-                  date_posted AS "datePosted",
-                  user_id AS "userId"
-           FROM posts
-           ORDER BY date_posted`
+			`SELECT p.id,
+                  p.image_file AS "imageFile",
+                  p.caption,
+                  p.date_posted AS "datePosted",
+                  p.user_id AS "userId",
+				  u.username,
+				  u.profile_image AS "profileImage"
+           FROM posts AS P
+		   LEFT JOIN users AS u
+		   ON u.id = p.user_id
+           ORDER BY p.date_posted`
 		);
 
-		return result.rows;
+		const allPosts = result.rows;
+
+		return allPosts;
 	}
 
 	/** Given a post id, return data about post.
@@ -64,21 +70,44 @@ class Post {
 
 	static async get(id) {
 		const postResult = await db.query(
-			`SELECT id,
-                  image_file AS "imageFile",
-                  caption,
-                  date_posted AS "datePosted",
-                  user_id AS "userId"
-           	FROM posts
-           	WHERE id = $1`,
+			`SELECT p.id AS postId,
+                  p.image_file AS "imageFile",
+                  p.caption,
+                  p.date_posted AS "datePosted",
+                  p.user_id AS "userId",
+				  u.username,
+				  u.profile_image AS "profileImage",
+				  l.post_id,
+				  c.comment
+           	FROM posts AS p
+			LEFT JOIN users AS u
+			ON u.id = p.user_id
+			LEFT JOIN likes AS l
+			ON l.post_id = p.id
+			LEFT JOIN comments AS c
+			ON c.post_id = p.id
+           	WHERE p.id = $1`,
 			[id]
 		);
 
-		const post = postResult.rows[0];
+		const post = postResult.rows;
+		const { postId, imageFile, caption, userId, username, profileImage } =
+			postResult.rows[0];
+		const likes = postResult.rows.map((l) => l.like);
+		const comments = postResult.rows.map((c) => c.comment);
 
-		if (!post) throw new NotFoundError(`No post with id: ${id}`);
+		if (post.length != 1) throw new NotFoundError(`No post with id: ${id}`);
 
-		return post;
+		return {
+			postId,
+			imageFile,
+			caption,
+			userId,
+			username,
+			profileImage,
+			likes,
+			comments,
+		};
 	}
 
 	/** Delete given post from database; returns undefined.

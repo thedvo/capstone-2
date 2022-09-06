@@ -48,11 +48,16 @@ router.delete('/:id', async function (req, res, next) {
 });
 
 /** POST / [/:post_id/like/]
- *  Like/Unlike a post
+ *  Like a post
  */
 
-router.post('/:id/like', async function (req, res, next) {
+router.post('/:id/:username/like', async function (req, res, next) {
 	try {
+		const user = req.params.username;
+		const post = req.params.id;
+
+		const like = await Post.addLike(user, post);
+		return res.json({ like });
 	} catch (err) {
 		return next(err);
 	}
@@ -62,8 +67,13 @@ router.post('/:id/like', async function (req, res, next) {
  *  Comment on a post
  */
 
-router.post('/:id/comment', async function (req, res, next) {
+router.post('/:id/:username/comment', async function (req, res, next) {
 	try {
+		const user = req.params.username;
+		const post = request.params.id;
+
+		const comment = await Post.addComment(user, post);
+		return res.json({ comment });
 	} catch (err) {
 		return next(err);
 	}

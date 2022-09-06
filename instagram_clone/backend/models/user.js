@@ -111,6 +111,7 @@ class User {
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email,
+				  profile_image AS "profileImage",
 				  last_modified,
                   is_admin AS "isAdmin"
            FROM users
@@ -163,16 +164,65 @@ class User {
 
 		user.posts = postRes.rows;
 
-		// make another query to Likes table
-		// adds user's likes to the query result object
-		// const userLikes = await db.query(
-		// 	`SELECT l.post_id
-		//    FROM likes AS l
-		//    WHERE l.user_id = $1`,
-		// 	[userId]
-		// );
+		// query a user's likes
+		const likesRes = await db.query(
+			`SELECT
+				p.id
+			FROM posts AS p
+			LEFT JOIN likes AS l
+			ON p.id = l.post_id
+			LEFT JOIN users AS u
+			ON u.id = l.user_id
+			WHERE u.id = $1`,
+			[user.id]
+		);
 
-		// user.likes = userLikes.rows.map((l) => l.post_id);
+		user.likes = likesRes.rows;
+
+		// query a user's comments
+		const userCommentsRes = await db.query(
+			`SELECT
+				p.id,
+				c.comment
+			FROM posts AS p
+			LEFT JOIN comments AS c
+			ON p.id = c.post_id
+			LEFT JOIN users AS u
+			ON u.id = c.user_id
+			WHERE u.id = $1`,
+			[user.id]
+		);
+
+		user.comments = userCommentsRes.rows;
+
+		// query a user's following
+		const userFollowingRes = await db.query(
+			`SELECT 
+				u.id,
+				u.username
+			FROM users AS u
+			LEFT JOIN follows AS f
+			ON u.id = f.user_followed_id
+			WHERE f.user_following_id = $1`,
+			[user.id]
+		);
+
+		user.following = userFollowingRes.rows;
+
+		// query a user's followers
+		const userFollowersRes = await db.query(
+			`SELECT 
+				u.id,
+				u.username
+			FROM users AS u
+			LEFT JOIN follows AS f
+			ON u.id = f.user_following_id
+			WHERE f.user_followed_id = $1`,
+			[user.id]
+		);
+
+		user.followers = userFollowersRes.rows;
+
 		return user;
 	}
 
@@ -316,12 +366,11 @@ class User {
 		let result = await db.query(
 			`
 		SELECT 
-			u.id,
-			u.username,
-			f.user_followed_id
+			u.id AS "userId",
+			u.username
 		FROM users AS u
 		LEFT JOIN follows AS f
-		ON u.id = f.user_following_id
+		ON u.id = f.user_followed_id
 		WHERE f.user_following_id = $1`,
 			[userId]
 		);
@@ -353,12 +402,11 @@ class User {
 		let result = await db.query(
 			`
 		SELECT 
-			u.id,
-			u.username,
-			f.user_following_id
+			u.id AS "userId",
+			u.username
 		FROM users AS u
 		LEFT JOIN follows AS f
-		ON u.id = f.user_followed_id
+		ON u.id = f.user_following_id
 		WHERE f.user_followed_id = $1`,
 			[userId]
 		);
@@ -374,13 +422,78 @@ class User {
 	 *
 	 *
 	 */
-	static async followUser(username) {}
+	static async followUser(currentUser, userFollowed) {
+		const preCheck = await db.query(
+			`SELECT id
+           FROM users
+           WHERE username = $1`,
+			[currentUser]
+		);
+		const cUser = preCheck.rows[0];
+		const currentUserId = preCheck.rows[0].id;
+		if (!cUser) throw new NotFoundError(`No record of user: ${currentUser}`);
+
+		const preCheck2 = await db.query(
+			`SELECT id
+           FROM users
+           WHERE id = $1`,
+			[userFollowed]
+		);
+		const userBeingFollowed = preCheck2.rows[0];
+
+		if (!userBeingFollowed)
+			throw new NotFoundError(`No record of user: ${userFollowed}`);
+
+		await db.query(
+			`INSERT INTO follows (user_following_id, user_followed_id)
+           VALUES ($1, $2)`,
+			[currentUserId, userFollowed]
+		);
+	}
 
 	/** Unfollow a user
 	 *
 	 *
 	 */
-	static async unfollowUser(username) {}
+	static async unfollowUser(currentUser, userUnfollowed) {
+		const preCheck = await db.query(
+			`SELECT id
+           FROM users
+           WHERE username = $1`,
+			[currentUser]
+		);
+		const user = preCheck.rows[0];
+		const userId = preCheck.rows[0].id;
+
+		if (!user) throw new NotFoundError(`No user: ${currentUser}`);
+
+		const preCheck2 = await db.query(
+			`SELECT id
+           FROM users
+           WHERE id = $1`,
+			[userUnfollowed]
+		);
+		const user2 = preCheck2.rows[0];
+
+		if (!user2) throw new NotFoundError(`No username: ${userUnfollowed}`);
+
+		const result = await db.query(
+			`DELETE
+			 FROM follows 
+			 WHERE 
+			 user_following_id = $1 
+			 AND user_followed_id = $2`,
+			[userId, userUnfollowed]
+		);
+
+		// const unfollow = result.rows[0];
+
+		// if (!unfollow) {
+		// 	throw new NotFoundError(
+		// 		`No record of user ${currentUser} following ${userUnfollowed}`
+		// 	);
+		// }
+	}
 }
 
 module.exports = User;

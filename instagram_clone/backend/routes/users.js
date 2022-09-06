@@ -143,7 +143,7 @@ router.get('/:username/following', async function (req, res, next) {
 router.get('/:username/followers', async function (req, res, next) {
 	try {
 		const username = req.params.username;
-		const following = await User.getUserFollowers(username);
+		const followers = await User.getUserFollowers(username);
 		return res.json({ followers });
 	} catch (err) {
 		return next(err);
@@ -154,8 +154,14 @@ router.get('/:username/followers', async function (req, res, next) {
  * Follow a user
  * */
 
-router.post('/:username/follow', async function (req, res, next) {
+router.post('/:username/follow/:id', async function (req, res, next) {
 	try {
+		const currentUser = req.params.username;
+		const userFollowed = req.params.id;
+
+		const follow = await User.followUser(currentUser, userFollowed);
+
+		return res.json({ followed: +req.params.id });
 	} catch (err) {
 		return next(err);
 	}
@@ -165,8 +171,14 @@ router.post('/:username/follow', async function (req, res, next) {
  * Unfollow a user
  * */
 
-router.post('/:username/unfollow', async function (req, res, next) {
+router.post('/:username/unfollow/:id', async function (req, res, next) {
 	try {
+		const currentUser = req.params.username;
+		const userUnfollowed = req.params.id;
+
+		const unfollow = await User.unfollowUser(currentUser, userUnfollowed);
+
+		return res.json({ unfollowed: +req.params.id });
 	} catch (err) {
 		return next(err);
 	}
