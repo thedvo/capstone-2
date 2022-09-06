@@ -182,7 +182,8 @@ class User {
 		// query a user's comments
 		const userCommentsRes = await db.query(
 			`SELECT
-				p.id,
+				p.id AS "postId",
+				c.id AS "commentId",
 				c.comment
 			FROM posts AS p
 			LEFT JOIN comments AS c
@@ -430,8 +431,9 @@ class User {
 			[currentUser]
 		);
 		const cUser = preCheck.rows[0];
-		const currentUserId = preCheck.rows[0].id;
 		if (!cUser) throw new NotFoundError(`No record of user: ${currentUser}`);
+
+		const currentUserId = preCheck.rows[0].id;
 
 		const preCheck2 = await db.query(
 			`SELECT id
@@ -463,9 +465,9 @@ class User {
 			[currentUser]
 		);
 		const user = preCheck.rows[0];
-		const userId = preCheck.rows[0].id;
+		if (!user) throw new NotFoundError(`No record of user: ${currentUser}`);
 
-		if (!user) throw new NotFoundError(`No user: ${currentUser}`);
+		const userId = preCheck.rows[0].id;
 
 		const preCheck2 = await db.query(
 			`SELECT id
@@ -475,7 +477,10 @@ class User {
 		);
 		const user2 = preCheck2.rows[0];
 
-		if (!user2) throw new NotFoundError(`No username: ${userUnfollowed}`);
+		if (!user2)
+			throw new NotFoundError(
+				`No record of ${currentUser} following user: ${userUnfollowed}`
+			);
 
 		const result = await db.query(
 			`DELETE
@@ -485,14 +490,6 @@ class User {
 			 AND user_followed_id = $2`,
 			[userId, userUnfollowed]
 		);
-
-		// const unfollow = result.rows[0];
-
-		// if (!unfollow) {
-		// 	throw new NotFoundError(
-		// 		`No record of user ${currentUser} following ${userUnfollowed}`
-		// 	);
-		// }
 	}
 }
 

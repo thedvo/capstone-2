@@ -117,7 +117,7 @@ class Post {
 
 	static async remove(id) {
 		const result = await db.query(
-			`Delete
+			`DELETE
             FROM posts
             WHERE id = $1
             RETURNING id`,
@@ -129,6 +129,58 @@ class Post {
 			throw new NotFoundError(`No post with id: ${id}`);
 		}
 	}
+
+	/** Add a Comment to a Post */
+	static async addComment(user, post, data) {
+		const userResult = await db.query(
+			`
+		SELECT
+			id,
+			username
+		FROM users
+		WHERE username = $1`,
+			[user]
+		);
+
+		const userId = userResult.rows[0].id;
+
+		const result = await db.query(
+			`INSERT INTO comments (
+				user_id,
+				post_id,
+				comment)
+			VALUES ($1, $2, $3)
+			RETURNING id, comment, user_id AS "userId", post_id AS "postId", date_posted AS "datePosted"`,
+			[userId, post, data.comment]
+		);
+
+		let comment = result.rows[0];
+		return comment;
+	}
+
+	/** Delete a Comment from a Post */
+	static async removeComment(post, comment) {
+		const result = await db.query(
+			`DELETE FROM comments
+			WHERE 
+			post_id = $1
+			AND id = $2
+			RETURNING id
+			`,
+			[post, comment]
+		);
+
+		const deleted_comment = result.rows[0];
+		if (!deleted_comment) {
+			throw new NotFoundError(`No comment with id: ${comment}`);
+		}
+	}
+
+	/** Like a Post */
+	static async addLike(user, post) {}
+
+	/** Unlike a Post */
+	static async removeLike(user, post) {}
 }
 
 module.exports = Post;

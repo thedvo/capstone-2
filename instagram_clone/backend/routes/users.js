@@ -10,7 +10,6 @@ const Post = require('../models/post');
 
 const jsonschema = require('jsonschema');
 const userUpdateSchema = require('../schemas/userUpdate.json');
-const postNewSchema = require('../schemas/postNew.json');
 
 const router = new express.Router();
 
@@ -83,26 +82,6 @@ router.delete('/:username', async function (req, res, next) {
 	try {
 		await User.remove(req.params.username);
 		return res.json({ deleted: req.params.username });
-	} catch (err) {
-		return next(err);
-	}
-});
-
-/** Create a new post
- * Utilized user_id in parameter to create post linked to current user
- * Authorization required: login
- */
-router.post('/:username/create-post', async function (req, res, next) {
-	try {
-		const validator = jsonschema.validate(req.body, postNewSchema);
-		if (!validator.valid) {
-			const errs = validator.errors.map((e) => e.stack);
-			throw new BadRequestError(errs);
-		}
-		const username = req.params.username;
-		const post = await Post.create(req.body, username);
-		// const post = await Post.create(req.body);
-		return res.status(201).json({ post });
 	} catch (err) {
 		return next(err);
 	}
