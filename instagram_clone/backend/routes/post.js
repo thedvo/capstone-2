@@ -128,8 +128,8 @@ router.post('/:id/:username/comment', async function (req, res, next) {
 
 router.delete('/:id/comment/:comment_id', async function (req, res, next) {
 	try {
-		const comment = req.params.comment_id;
 		const post = req.params.id;
+		const comment = req.params.comment_id;
 
 		await Post.removeComment(post, comment);
 		return res.json({ deleted: +req.params.comment_id });

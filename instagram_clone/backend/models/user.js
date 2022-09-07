@@ -155,8 +155,7 @@ class User {
 				  id,
 				  image_file AS "imageFile",
 				  caption,
-				  date_posted AS "datePosted",
-				  user_id AS "userId"
+				  date_posted AS "datePosted"
 			FROM posts
 			WHERE user_id = $1`,
 			[user.id]
@@ -167,7 +166,7 @@ class User {
 		// query a user's likes
 		const likesRes = await db.query(
 			`SELECT
-				p.id
+				p.id AS "postId"
 			FROM posts AS p
 			LEFT JOIN likes AS l
 			ON p.id = l.post_id

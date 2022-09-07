@@ -70,44 +70,64 @@ class Post {
 
 	static async get(id) {
 		const postResult = await db.query(
-			`SELECT p.id AS postId,
-                  p.image_file AS "imageFile",
-                  p.caption,
-                  p.date_posted AS "datePosted",
-                  p.user_id AS "userId",
-				  u.username,
-				  u.profile_image AS "profileImage",
-				  l.post_id,
-				  c.comment
-           	FROM posts AS p
-			LEFT JOIN users AS u
-			ON u.id = p.user_id
-			LEFT JOIN likes AS l
-			ON l.post_id = p.id
-			LEFT JOIN comments AS c
-			ON c.post_id = p.id
-           	WHERE p.id = $1`,
+			`SELECT id AS postId,
+		          image_file AS "imageFile",
+		          caption,
+		          date_posted AS "datePosted"
+		   	FROM posts AS p
+		   	WHERE p.id = $1`,
 			[id]
 		);
 
-		const post = postResult.rows;
-		const { postId, imageFile, caption, userId, username, profileImage } =
-			postResult.rows[0];
-		const likes = postResult.rows.map((l) => l.like);
-		const comments = postResult.rows.map((c) => c.comment);
+		const post = postResult.rows[0];
+		if (!post) throw new NotFoundError(`No post with id: ${id}`);
 
-		if (post.length != 1) throw new NotFoundError(`No post with id: ${id}`);
+		const userResult = await db.query(
+			`SELECT 
+			u.id,
+			u.username,
+			u.profile_image AS "profileImage"
+			FROM users AS u
+			LEFT JOIN posts AS p
+			ON u.id = p.user_id
+			WHERE p.id = $1
+			`,
+			[id]
+		);
 
-		return {
-			postId,
-			imageFile,
-			caption,
-			userId,
-			username,
-			profileImage,
-			likes,
-			comments,
-		};
+		post.user = userResult.rows;
+
+		// query the post's likes
+		const likesRes = await db.query(
+			`SELECT
+				l.user_id AS "userId",
+				l.post_id AS "postId",
+				u.username
+			FROM likes AS l
+			LEFT JOIN users AS u
+			ON l.user_id = u.id
+			WHERE l.post_id = $1`,
+			[id]
+		);
+
+		post.likes = likesRes.rows;
+
+		// query the post's comments
+		const commentsRes = await db.query(
+			`SELECT
+				p.id AS "postId",
+				c.id AS "commentId",
+				c.comment
+			FROM posts AS p
+			LEFT JOIN comments AS c
+			ON p.id = c.post_id
+			WHERE p.id = $1`,
+			[id]
+		);
+
+		post.comments = commentsRes.rows;
+
+		return post;
 	}
 
 	/** Delete given post from database; returns undefined.
@@ -177,10 +197,55 @@ class Post {
 	}
 
 	/** Like a Post */
-	static async addLike(user, post) {}
+	static async addLike(user, post) {
+		const userResult = await db.query(
+			`
+		SELECT
+			id,
+			username
+		FROM users
+		WHERE username = $1`,
+			[user]
+		);
+
+		const userId = userResult.rows[0].id;
+
+		const result = await db.query(
+			`INSERT INTO likes (
+				user_id,
+				post_id)
+			VALUES ($1, $2)
+			RETURNING user_id AS "userId", post_id AS "postId"`,
+			[userId, post]
+		);
+
+		let like = result.rows[0];
+		return like;
+	}
 
 	/** Unlike a Post */
-	static async removeLike(user, post) {}
+	static async removeLike(user, post) {
+		const userResult = await db.query(
+			`
+		SELECT
+			id,
+			username
+		FROM users
+		WHERE username = $1`,
+			[user]
+		);
+
+		const userId = userResult.rows[0].id;
+
+		const result = await db.query(
+			`DELETE FROM likes
+			WHERE 
+			user_id = $1
+			AND post_id = $2
+			`,
+			[userId, post]
+		);
+	}
 }
 
 module.exports = Post;
