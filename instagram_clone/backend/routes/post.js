@@ -3,6 +3,7 @@ const { BadRequestError } = require('../expressError');
 const { ensureLoggedIn, verifyUserOrAdmin } = require('../middleware/auth');
 
 const Post = require('../models/post');
+const User = require('../models/user');
 
 const jsonschema = require('jsonschema');
 const postNewSchema = require('../schemas/postNew.json');
@@ -72,12 +73,12 @@ router.delete('/:id', async function (req, res, next) {
  *  Like a post
  */
 
-router.post('/:id/:username/like', async function (req, res, next) {
+router.post('/:post_id/:username/like', async function (req, res, next) {
 	try {
 		const user = req.params.username;
-		const post = req.params.id;
+		const post = req.params.post_id;
 
-		const like = await Post.addLike(user, post);
+		const like = await User.addLike(user, post);
 		return res.json({ like });
 	} catch (err) {
 		return next(err);
@@ -88,12 +89,12 @@ router.post('/:id/:username/like', async function (req, res, next) {
  *  Unike a post
  */
 
-router.delete('/:id/:username/unlike', async function (req, res, next) {
+router.delete('/:post_id/:username/unlike', async function (req, res, next) {
 	try {
 		const user = req.params.username;
-		const post = req.params.id;
+		const post = req.params.post_id;
 
-		await Post.removeLike(user, post);
+		await User.removeLike(user, post);
 		return res.json({ unliked_post: +post });
 	} catch (err) {
 		return next(err);
@@ -115,7 +116,7 @@ router.post('/:id/:username/comment', async function (req, res, next) {
 		const post = req.params.id;
 		const data = req.body;
 
-		const comment = await Post.addComment(user, post, data);
+		const comment = await User.addComment(user, post, data);
 		return res.status(201).json({ comment });
 	} catch (err) {
 		return next(err);
@@ -131,7 +132,7 @@ router.delete('/:id/comment/:comment_id', async function (req, res, next) {
 		const post = req.params.id;
 		const comment = req.params.comment_id;
 
-		await Post.removeComment(post, comment);
+		await User.removeComment(post, comment);
 		return res.json({ deleted: +req.params.comment_id });
 	} catch (err) {
 		return next(err);

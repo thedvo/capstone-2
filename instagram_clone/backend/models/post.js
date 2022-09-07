@@ -2,6 +2,10 @@ const db = require('../db');
 const { NotFoundError } = require('../expressError');
 
 class Post {
+	/************************************************************************************************************************************** */
+	/**           CREATE/READ/UPDATE/DELETE POSTS                 */
+	/************************************************************************************************************************************** */
+
 	/** Create a post (from data), update db, return new post data.
 	 *
 	 * data should be { image_file, caption }
@@ -11,6 +15,7 @@ class Post {
 	 * */
 
 	static async create(data, username) {
+		// first query the user to get their ID
 		const userResult = await db.query(
 			`SELECT 
 				id,
@@ -21,6 +26,9 @@ class Post {
 		);
 		const userId = userResult.rows[0].id;
 
+		if (!userId) throw new NotFoundError(`No record of user: ${username}`);
+
+		// user the req.body information passed to this create() method along with the userId queried above to insert the data into the Posts table.
 		const result = await db.query(
 			`INSERT INTO posts (
 	            image_file,
@@ -63,6 +71,8 @@ class Post {
 
 	/** Given a post id, return data about post.
 	 *
+	 * We make separate individual queries to user, likes, comments and add their resutls to the Post result.
+	 *
 	 * Returns { id, image_file, caption, date_posted, user_id }
 	 *
 	 * Throws NotFoundError if not found.
@@ -101,7 +111,6 @@ class Post {
 		const likesRes = await db.query(
 			`SELECT
 				l.user_id AS "userId",
-				l.post_id AS "postId",
 				u.username
 			FROM likes AS l
 			LEFT JOIN users AS u
@@ -115,12 +124,14 @@ class Post {
 		// query the post's comments
 		const commentsRes = await db.query(
 			`SELECT
-				p.id AS "postId",
 				c.id AS "commentId",
-				c.comment
+				c.comment,
+				u.username
 			FROM posts AS p
 			LEFT JOIN comments AS c
 			ON p.id = c.post_id
+			LEFT JOIN users AS u
+			ON u.id = c.user_id
 			WHERE p.id = $1`,
 			[id]
 		);
@@ -148,103 +159,6 @@ class Post {
 		if (!post) {
 			throw new NotFoundError(`No post with id: ${id}`);
 		}
-	}
-
-	/** Add a Comment to a Post */
-	static async addComment(user, post, data) {
-		const userResult = await db.query(
-			`
-		SELECT
-			id,
-			username
-		FROM users
-		WHERE username = $1`,
-			[user]
-		);
-
-		const userId = userResult.rows[0].id;
-
-		const result = await db.query(
-			`INSERT INTO comments (
-				user_id,
-				post_id,
-				comment)
-			VALUES ($1, $2, $3)
-			RETURNING id, comment, user_id AS "userId", post_id AS "postId", date_posted AS "datePosted"`,
-			[userId, post, data.comment]
-		);
-
-		let comment = result.rows[0];
-		return comment;
-	}
-
-	/** Delete a Comment from a Post */
-	static async removeComment(post, comment) {
-		const result = await db.query(
-			`DELETE FROM comments
-			WHERE 
-			post_id = $1
-			AND id = $2
-			RETURNING id
-			`,
-			[post, comment]
-		);
-
-		const deleted_comment = result.rows[0];
-		if (!deleted_comment) {
-			throw new NotFoundError(`No comment with id: ${comment}`);
-		}
-	}
-
-	/** Like a Post */
-	static async addLike(user, post) {
-		const userResult = await db.query(
-			`
-		SELECT
-			id,
-			username
-		FROM users
-		WHERE username = $1`,
-			[user]
-		);
-
-		const userId = userResult.rows[0].id;
-
-		const result = await db.query(
-			`INSERT INTO likes (
-				user_id,
-				post_id)
-			VALUES ($1, $2)
-			RETURNING user_id AS "userId", post_id AS "postId"`,
-			[userId, post]
-		);
-
-		let like = result.rows[0];
-		return like;
-	}
-
-	/** Unlike a Post */
-	static async removeLike(user, post) {
-		const userResult = await db.query(
-			`
-		SELECT
-			id,
-			username
-		FROM users
-		WHERE username = $1`,
-			[user]
-		);
-
-		const userId = userResult.rows[0].id;
-
-		const result = await db.query(
-			`DELETE FROM likes
-			WHERE 
-			user_id = $1
-			AND post_id = $2
-			`,
-			[userId, post]
-		);
 	}
 }
 

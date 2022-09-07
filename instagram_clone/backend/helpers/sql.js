@@ -1,6 +1,7 @@
 const { BadRequestError } = require('../expressError');
 
 // sets up the variables needed for a SQL query to update
+// turns valid JSON key variables to valid SQL
 
 // dataToUpdate = the updated data from req.body
 // jsToSql = column name variables in an object. used for translating camelcase variables to snake case

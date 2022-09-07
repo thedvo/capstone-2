@@ -14,7 +14,12 @@ const { BCRYPT_WORK_FACTOR } = require('../config');
 /** Related functions for users */
 
 class User {
-	/** authenticate user with username, password.
+	/************************************************************************************************************************************** */
+	/**           CREATE/READ/UPDATE/DELETE USERS                 */
+	/************************************************************************************************************************************** */
+
+	/** LOGIN --> AUTHENTICATE A USER
+	 * authenticate user with username, password.
 	 *
 	 * Returns { username, first_name, last_name, email, is_admin }
 	 *
@@ -52,7 +57,7 @@ class User {
 		throw new UnauthorizedError('Invalid username/password');
 	}
 
-	/** Register user with data.
+	/** REGISTER A NEW USER (CREATE)
 	 *
 	 * Returns { username, firstName, lastName, email, isAdmin }
 	 *
@@ -98,7 +103,7 @@ class User {
 		return user;
 	}
 
-	/** Find all users.
+	/** FIND ALL USERS
 	 *
 	 * Returns [{ username, first_name, last_name, email, is_admin }, ...]
 	 **/
@@ -121,7 +126,9 @@ class User {
 		return result.rows;
 	}
 
-	/** Given a username, return data about user.
+	/** GET A USER
+	 *
+	 * Given a username, return data about user.
 	 *
 	 * Returns { username, first_name, last_name, profile_image, bio, is_admin }
 	 *   where jobs is { id, title, company_handle, company_name, state }
@@ -226,7 +233,7 @@ class User {
 		return user;
 	}
 
-	/** Update user data with `data`.
+	/** UPDATE USER DATA WITH 'DATA'.
 	 *
 	 * This is a "partial update" --- it's fine if data doesn't containß
 	 * all the fields; this only changes provided ones.
@@ -294,7 +301,9 @@ class User {
 		return user;
 	}
 
-	/** Delete given user from database; returns undefined. */
+	/** DELETE A USER
+	 *
+	 * Delete given user from database; returns undefined. */
 
 	static async remove(username) {
 		let result = await db.query(
@@ -309,7 +318,11 @@ class User {
 		if (!user) throw new NotFoundError(`No user: ${username}`);
 	}
 
-	/** Get a user's 'likes'
+	/************************************************************************************************************************************** */
+	/**           LIKES                 */
+	/************************************************************************************************************************************** */
+
+	/** GET A USER'S LIKES
 	 *
 	 * Will be used to display a user's liked posts
 	 */
@@ -324,14 +337,12 @@ class User {
 		);
 		const userId = userResult.rows[0].id;
 
+		if (!userId) throw new NotFoundError(`No record of user: ${username}`);
+
 		const likeResult = await db.query(
 			`
 				 SELECT p.id AS "postId",
-                        p.image_file,
-                        p.caption,
-						p.user_id AS "poster_id",
-						u.id AS "id_of_like",
-                        u.username AS "username_of_like"
+                        p.image_file
                  FROM posts AS p
                  LEFT JOIN likes AS l 
 				 ON p.id = l.post_id
@@ -348,6 +359,157 @@ class User {
 		return likeResult.rows;
 	}
 
+	/** LIKE A POST
+	 *
+	 * * 3 PRE-CHECKS
+	 * --> if user exists
+	 * --> if post exists
+	 * --> if user already likes the post
+	 *
+	 */
+	static async addLike(user, post) {
+		// check if user exists in database
+		const preCheck = await db.query(
+			`SELECT username
+			FROM users
+			WHERE username = $1`,
+			[user]
+		);
+
+		const existingUser = preCheck.rows[0];
+		if (!existingUser) throw new NotFoundError(`No record of user: ${user}`);
+
+		// check if the post exists in the database
+		const preCheck2 = await db.query(
+			`SELECT id
+			FROM posts
+			WHERE id = $1`,
+			[post]
+		);
+
+		const existingPost = preCheck2.rows[0];
+		if (!existingPost)
+			throw new NotFoundError(`No record of post with id: ${post}`);
+
+		// query user's id which will be used for INSERT
+		const userResult = await db.query(
+			`
+		SELECT id
+		FROM users
+		WHERE username = $1`,
+			[user]
+		);
+
+		const userId = userResult.rows[0].id;
+
+		// check if user already likes this post
+		const preCheck3 = await db.query(
+			`SELECT user_id
+			FROM likes
+			WHERE user_id = $1
+			AND post_id = $2`,
+			[userId, post]
+		);
+
+		const alreadyLiked = preCheck3.rows[0];
+		if (alreadyLiked)
+			throw new UnauthorizedError(`You already liked this image.`);
+
+		const result = await db.query(
+			`INSERT INTO likes (
+				user_id,
+				post_id)
+			VALUES ($1, $2)
+			RETURNING user_id AS "userId", post_id AS "postId"`,
+			[userId, post]
+		);
+
+		let like = result.rows[0];
+		return like;
+	}
+
+	/** UNLIKE A POST */
+	static async removeLike(user, post) {
+		const userResult = await db.query(
+			`
+		SELECT
+			id,
+			username
+		FROM users
+		WHERE username = $1`,
+			[user]
+		);
+
+		const userId = userResult.rows[0].id;
+
+		if (!userId) throw new NotFoundError(`No record of user: ${username}`);
+
+		const result = await db.query(
+			`DELETE FROM likes
+			WHERE 
+			user_id = $1
+			AND post_id = $2
+			`,
+			[userId, post]
+		);
+	}
+
+	/************************************************************************************************************************************** */
+	/**           COMMENTS                 */
+	/************************************************************************************************************************************** */
+
+	/** Add a Comment to a Post */
+	static async addComment(user, post, data) {
+		const userResult = await db.query(
+			`
+		SELECT
+			id,
+			username
+		FROM users
+		WHERE username = $1`,
+			[user]
+		);
+
+		const userId = userResult.rows[0].id;
+
+		if (!userId) throw new NotFoundError(`No record of user: ${username}`);
+
+		const result = await db.query(
+			`INSERT INTO comments (
+				user_id,
+				post_id,
+				comment)
+			VALUES ($1, $2, $3)
+			RETURNING id, comment, user_id AS "userId", post_id AS "postId", date_posted AS "datePosted"`,
+			[userId, post, data.comment]
+		);
+
+		let comment = result.rows[0];
+		return comment;
+	}
+
+	/** Delete a Comment from a Post */
+	static async removeComment(post, comment) {
+		const result = await db.query(
+			`DELETE FROM comments
+			WHERE 
+			post_id = $1
+			AND id = $2
+			RETURNING id
+			`,
+			[post, comment]
+		);
+
+		const deleted_comment = result.rows[0];
+		if (!deleted_comment) {
+			throw new NotFoundError(`No comment with id: ${comment}`);
+		}
+	}
+
+	/************************************************************************************************************************************** */
+	/**           FOLLOWS                 */
+	/************************************************************************************************************************************** */
+
 	/** Get a user's 'following'
 	 *
 	 * Will be used to display a list of users which the current user follows
@@ -362,6 +524,8 @@ class User {
 			[username]
 		);
 		const userId = userResult.rows[0].id;
+
+		if (!userId) throw new NotFoundError(`No record of user: ${username}`);
 
 		let result = await db.query(
 			`
@@ -399,6 +563,8 @@ class User {
 		);
 		const userId = userResult.rows[0].id;
 
+		if (!userId) throw new NotFoundError(`No record of user: ${username}`);
+
 		let result = await db.query(
 			`
 		SELECT 
@@ -420,9 +586,15 @@ class User {
 
 	/** Follow a user
 	 *
+	 * 4 PRE-CHECKS
+	 * 	--> if user exists
+	 * 	--> if user being followed exists
+	 * 	--> if user is trying to follow themselves
+	 *  --> if the user already follows the user
 	 *
 	 */
 	static async followUser(currentUser, userFollowed) {
+		// Check if the current user who is following exists in the database
 		const preCheck = await db.query(
 			`SELECT id
            FROM users
@@ -434,6 +606,7 @@ class User {
 
 		const currentUserId = preCheck.rows[0].id;
 
+		// Check if the user being followed exists in the database
 		const preCheck2 = await db.query(
 			`SELECT id
            FROM users
@@ -445,6 +618,27 @@ class User {
 		if (!userBeingFollowed)
 			throw new NotFoundError(`No record of user: ${userFollowed}`);
 
+		// Check if user is trying to follow themselves
+		if (userBeingFollowed.id === currentUserId)
+			throw new UnauthorizedError(`Sorry, you can not follow yourself.`);
+
+		// Check if user is already following this user
+		const preCheck3 = await db.query(
+			`SELECT user_following_id
+			FROM follows
+			WHERE user_following_id = $1
+			AND user_followed_id = $2`,
+			[currentUserId, userFollowed]
+		);
+
+		const alreadyFollow = preCheck3.rows[0];
+		if (alreadyFollow) {
+			throw new UnauthorizedError(
+				`You already follow user with id: ${userFollowed}`
+			);
+		}
+
+		// if all pre-checks pass, insert the follow into the database.
 		await db.query(
 			`INSERT INTO follows (user_following_id, user_followed_id)
            VALUES ($1, $2)`,
@@ -454,6 +648,9 @@ class User {
 
 	/** Unfollow a user
 	 *
+	 * 2 PRE-CHECKS
+	 * --> if user exists
+	 * --> if user currently follows the user being unfollowed
 	 *
 	 */
 	static async unfollowUser(currentUser, userUnfollowed) {
@@ -469,16 +666,17 @@ class User {
 		const userId = preCheck.rows[0].id;
 
 		const preCheck2 = await db.query(
-			`SELECT id
-           FROM users
-           WHERE id = $1`,
-			[userUnfollowed]
+			`SELECT user_followed_id
+           FROM follows
+           WHERE user_followed_id = $1
+		   AND user_following_id = $2`,
+			[userUnfollowed, userId]
 		);
 		const user2 = preCheck2.rows[0];
 
 		if (!user2)
 			throw new NotFoundError(
-				`No record of ${currentUser} following user: ${userUnfollowed}`
+				`No record of ${currentUser} following user with id: ${userUnfollowed}`
 			);
 
 		const result = await db.query(

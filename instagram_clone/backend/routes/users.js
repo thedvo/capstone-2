@@ -31,7 +31,7 @@ router.get('/', async function (req, res, next) {
 
 /** GET /[username] => { user }
  *
- * Returns { username, firstName, lastName, profileImage, bio, posts, likes, followers, following}
+ * Returns { username, firstName, lastName, profileImage, bio, posts, likes, comments, followers, following}
  *
  * Authorization required: login
  **/
