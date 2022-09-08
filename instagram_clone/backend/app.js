@@ -21,12 +21,12 @@ const cors = require('cors');
  */
 const app = express();
 
-app.use(authenticateJWT);
-
 // place middleware above routes so they can run on every incoming request.
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
+
+app.use(authenticateJWT);
 
 // Route Handlers
 app.use('/auth', authRoutes);
