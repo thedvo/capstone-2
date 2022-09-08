@@ -52,7 +52,7 @@ function verifyUserOrAdmin(req, res, next) {
 		// This property is useful while exposing the request-level information such as the request path name, user settings, authenticated user, etc.
 		const user = res.locals.user;
 		// if not user AND admin or the userId matches the userId in the parameter
-		if (!(user && (user.isAdmin || user.userId === req.params.userId))) {
+		if (!(user && (user.isAdmin || user.username === req.params.username))) {
 			throw new UnauthorizedError();
 		}
 		return next();

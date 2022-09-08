@@ -1,7 +1,7 @@
 /** Routes for Users */
 const express = require('express');
 
-const { ensureLoggedIn } = require('../middleware/auth');
+const { ensureLoggedIn, verifyUserOrAdmin } = require('../middleware/auth');
 const { BadRequestError } = require('../expressError');
 const { createToken } = require('../helpers/token');
 
@@ -20,7 +20,7 @@ const router = new express.Router();
  * Authorization required: login
  **/
 
-router.get('/', async function (req, res, next) {
+router.get('/', ensureLoggedIn, async function (req, res, next) {
 	try {
 		const users = await User.findAll();
 		return res.json({ users });
@@ -36,7 +36,7 @@ router.get('/', async function (req, res, next) {
  * Authorization required: login
  **/
 // *****************remember to add back ensureLoggedIn!!!*************************
-router.get('/:username', async function (req, res, next) {
+router.get('/:username', ensureLoggedIn, async function (req, res, next) {
 	try {
 		const user = await User.get(req.params.username);
 		return res.json({ user });
@@ -52,11 +52,11 @@ router.get('/:username', async function (req, res, next) {
  *
  * Returns { username, firstName, lastName, email, isAdmin }
  *
- * Authorization required: login
+ * Authorization required: verifyUserorAdmin
  **/
 
 // add verifyUserorAdmin
-router.patch('/:username', async function (req, res, next) {
+router.patch('/:username', verifyUserOrAdmin, async function (req, res, next) {
 	try {
 		const validator = jsonschema.validate(req.body, userUpdateSchema);
 		if (!validator.valid) {
@@ -74,11 +74,10 @@ router.patch('/:username', async function (req, res, next) {
 
 /** DELETE /[username]  =>  { deleted: username }
  *
- * Authorization required: login
+ * Authorization required: verifyUserorAdmin
  **/
 
-// add ensureLoggedIn + verifyUser
-router.delete('/:username', async function (req, res, next) {
+router.delete('/:username', verifyUserOrAdmin, async function (req, res, next) {
 	try {
 		await User.remove(req.params.username);
 		return res.json({ deleted: req.params.username });
@@ -89,9 +88,10 @@ router.delete('/:username', async function (req, res, next) {
 
 /** GET / [:username/likes]
  *  Links to a user's likes
+ * 	Authorization required: login
  */
 
-router.get('/:username/likes', async function (req, res, next) {
+router.get('/:username/likes', ensureLoggedIn, async function (req, res, next) {
 	try {
 		const username = req.params.username;
 		const likes = await User.getUserLikes(username);
@@ -103,64 +103,85 @@ router.get('/:username/likes', async function (req, res, next) {
 
 /** GET / [:username/following]
  *  Shows list of current user's following
+ * 	Authorization required: login
+ *
  */
 
-router.get('/:username/following', async function (req, res, next) {
-	try {
-		const username = req.params.username;
-		const following = await User.getUserFollowing(username);
-		return res.json({ following });
-	} catch (err) {
-		return next(err);
+router.get(
+	'/:username/following',
+	ensureLoggedIn,
+	async function (req, res, next) {
+		try {
+			const username = req.params.username;
+			const following = await User.getUserFollowing(username);
+			return res.json({ following });
+		} catch (err) {
+			return next(err);
+		}
 	}
-});
+);
 
 /** GET / [:username/followers]
  *  Shows list of current user's followers
+ *  Authorization required: login
  */
 
-router.get('/:username/followers', async function (req, res, next) {
-	try {
-		const username = req.params.username;
-		const followers = await User.getUserFollowers(username);
-		return res.json({ followers });
-	} catch (err) {
-		return next(err);
+router.get(
+	'/:username/followers',
+	ensureLoggedIn,
+	async function (req, res, next) {
+		try {
+			const username = req.params.username;
+			const followers = await User.getUserFollowers(username);
+			return res.json({ followers });
+		} catch (err) {
+			return next(err);
+		}
 	}
-});
+);
 
 /** POST / [/follow/:follow-id]
- * Follow a user
+ * 	Follow a user
+ * 	Authorization required: verifyUserOrAdmin
  * */
 
-router.post('/:username/follow/:id', async function (req, res, next) {
-	try {
-		const currentUser = req.params.username;
-		const userFollowed = req.params.id;
+router.post(
+	'/:username/follow/:id',
+	verifyUserOrAdmin,
+	async function (req, res, next) {
+		try {
+			const currentUser = req.params.username;
+			const userFollowed = req.params.id;
 
-		const follow = await User.followUser(currentUser, userFollowed);
+			const follow = await User.followUser(currentUser, userFollowed);
 
-		return res.json({ followed: +req.params.id });
-	} catch (err) {
-		return next(err);
+			return res.json({ followed: +req.params.id });
+		} catch (err) {
+			return next(err);
+		}
 	}
-});
+);
 
 /** POST / [/unfollow/:follow-id]
- * Unfollow a user
+ * 	Unfollow a user
+ * 	Authorization required: verifyUserOrAdmin
  * */
 
-router.post('/:username/unfollow/:id', async function (req, res, next) {
-	try {
-		const currentUser = req.params.username;
-		const userUnfollowed = req.params.id;
+router.post(
+	'/:username/unfollow/:id',
+	verifyUserOrAdmin,
+	async function (req, res, next) {
+		try {
+			const currentUser = req.params.username;
+			const userUnfollowed = req.params.id;
 
-		const unfollow = await User.unfollowUser(currentUser, userUnfollowed);
+			const unfollow = await User.unfollowUser(currentUser, userUnfollowed);
 
-		return res.json({ unfollowed: +req.params.id });
-	} catch (err) {
-		return next(err);
+			return res.json({ unfollowed: +req.params.id });
+		} catch (err) {
+			return next(err);
+		}
 	}
-});
+);
 
 module.exports = router;
