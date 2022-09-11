@@ -162,12 +162,12 @@ router.post(
 	}
 );
 
-/** POST / [/unfollow/:follow-id]
+/** DELETE / [/unfollow/:follow-id]
  * 	Unfollow a user
  * 	Authorization required: verifyUserOrAdmin
  * */
 
-router.post(
+router.delete(
 	'/:username/unfollow/:id',
 	verifyUserOrAdmin,
 	async function (req, res, next) {
