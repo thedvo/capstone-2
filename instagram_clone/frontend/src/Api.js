@@ -104,13 +104,13 @@ class igCloneApi {
 
 	/** Save updates to user profile */
 	static async saveProfile(username, data) {
-		let res = await this.request(`users/${username}`, data, 'patch');
+		let res = await this.request(`user/${username}/edit`, data, 'patch');
 		return res.user;
 	}
 
 	/** Delete a user */
 	static async deleteUser(username) {
-		let res = await this.request(`users/${username}`, {}, 'delete');
+		let res = await this.request(`user/${username}`, {}, 'delete');
 		return res;
 	}
 
