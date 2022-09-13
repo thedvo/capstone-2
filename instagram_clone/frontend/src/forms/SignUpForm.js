@@ -34,7 +34,7 @@ const SignUpForm = ({ signup }) => {
 		e.preventDefault();
 		let res = await signup(formData);
 		if (res.success) {
-			history.push('/companies');
+			history.push('/');
 		} else {
 			setFormErrors(res.errors);
 		}

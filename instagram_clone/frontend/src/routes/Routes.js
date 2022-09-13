@@ -6,7 +6,9 @@ import Home from '../Home';
 
 /** Functional Components */
 import UserDetail from '../users/UserDetail';
-import UserList from '../users/UserList';
+import FollowingList from '../users/FollowingList';
+import FollowerList from '../users/FollwerList';
+import LikesList from '../users/LikesList';
 
 import PostList from '../posts/PostList';
 import PostDetail from '../posts/PostDetail';
@@ -53,6 +55,21 @@ const Routes = ({ login, signup }) => {
 			{/* Shows an individual user's profile */}
 			<ProtectedRoute exact path="/users/:username">
 				<UserDetail />
+			</ProtectedRoute>
+
+			{/* Shows an individual user's profile */}
+			<ProtectedRoute exact path="/users/:username/likes">
+				<LikesList />
+			</ProtectedRoute>
+
+			{/* Shows an individual user's profile */}
+			<ProtectedRoute exact path="/users/:username/following">
+				<FollowingList />
+			</ProtectedRoute>
+
+			{/* Shows an individual user's profile */}
+			<ProtectedRoute exact path="/users/:username/followers">
+				<FollowerList />
 			</ProtectedRoute>
 
 			{/* Display user profile */}

@@ -16,29 +16,29 @@ const { UnauthorizedError } = require('../expressError');
  * It's not an error if no token was provided or if the token is not valid.
  */
 
-// function authenticateJWT(req, res, next) {
-// 	try {
-// 		const authHeader = req.headers && req.headers.authorization;
-// 		if (authHeader) {
-// 			const token = authHeader.replace(/^[Bb]earer /, '').trim();
-// 			res.locals.user = jwt.verify(token, SECRET_KEY);
-// 		}
-// 		return next();
-// 	} catch (err) {
-// 		return next();
-// 	}
-// }
-
 function authenticateJWT(req, res, next) {
 	try {
-		const tokenFromBody = req.headers.token;
-		const payload = jwt.verify(tokenFromBody, SECRET_KEY);
-		req.user = payload;
+		const authHeader = req.headers && req.headers.authorization;
+		if (authHeader) {
+			const token = authHeader.replace(/^[Bb]earer /, '').trim();
+			res.locals.user = jwt.verify(token, SECRET_KEY);
+		}
 		return next();
 	} catch (err) {
 		return next();
 	}
 }
+
+// function authenticateJWT(req, res, next) {
+// 	try {
+// 		const tokenFromBody = req.headers.token;
+// 		const payload = jwt.verify(tokenFromBody, SECRET_KEY);
+// 		req.user = payload;
+// 		return next();
+// 	} catch (err) {
+// 		return next();
+// 	}
+// }
 
 /** Middleware to use when they must be logged in.
  *
