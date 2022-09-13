@@ -15,11 +15,15 @@ const PostList = () => {
 
 	// on mount, make a request to get all posts
 	useEffect(function getPostsOnMount() {
+		getAllPosts();
+	}, []);
+
+	// will be used to update Post state
+	async function getAllPosts() {
 		let posts = await igCloneApi.getPosts();
 		setPosts(posts);
 		setIsLoading(false);
-	}, []);
-
+	}
 
 	if (isLoading) {
 		return (

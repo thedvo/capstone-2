@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useParams } from 'react';
 import UserContext from '../UserContext';
 import igCloneApi from '../Api';
 import CommentForm from '../forms/CommentForm';
@@ -69,7 +69,7 @@ const PostDetail = () => {
 				</h4>
 				{/* map the comments*/}
 				{post.comments.map((comment) => comment)}
-				<CommentForm />
+				<CommentForm postId={post.id} />
 			</div>
 
 			<p>{post.datePosted}</p>

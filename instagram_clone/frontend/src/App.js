@@ -10,12 +10,6 @@ import jwt from 'jsonwebtoken';
 import UserContext from './UserContext';
 import useLocalStorage from './hooks/useLocalStorage';
 
-// import SignUpForm from './forms/SignUpForm';
-// import LoginForm from './forms/LoginForm';
-// import UserEditForm from './forms/UserEditForm';
-// import CommentForm from './forms/CommentForm';
-// import PostForm from './forms/PostForm';
-
 /**
  - App component (top of hierarchy) renders Nav and Routes components
  - declares state which will be passed down to child props (token, currentUser)
