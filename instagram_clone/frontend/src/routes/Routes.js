@@ -15,6 +15,7 @@ import PostDetail from '../posts/PostDetail';
 import LoginForm from '../forms/LoginForm';
 import SignUpForm from '../forms/SignUpForm';
 import UserEditForm from '../forms/UserEditForm';
+import PostForm from '../forms/PostForm';
 
 /** Route Helpers */
 import NotFound from '../routes/NotFound';
@@ -35,22 +36,27 @@ const Routes = ({ login, signup }) => {
 			</Route>
 
 			{/* Shows list of Posts */}
-			<ProtectedRoute exact path="/post">
+			<ProtectedRoute exact path="/posts">
 				<PostList />
 			</ProtectedRoute>
 
+			{/* Shows create post form */}
+			<ProtectedRoute path="/posts/create">
+				<PostForm />
+			</ProtectedRoute>
+
 			{/* Individual Post */}
-			<ProtectedRoute path="/post/:id">
+			<ProtectedRoute path="/posts/:id">
 				<PostDetail />
 			</ProtectedRoute>
 
-			{/* Shows list of Users */}
-			<ProtectedRoute exact path="/user">
-				<UserList />
+			{/* Shows an individual user's profile */}
+			<ProtectedRoute exact path="/users/:username">
+				<UserDetail />
 			</ProtectedRoute>
 
 			{/* Display user profile */}
-			<ProtectedRoute exact path="/user/:username">
+			<ProtectedRoute exact path="/profile">
 				<UserDetail />
 			</ProtectedRoute>
 
@@ -65,7 +71,7 @@ const Routes = ({ login, signup }) => {
 			</Route>
 
 			{/* Displays Edit Profile Form */}
-			<ProtectedRoute exact path="/user/:username/edit">
+			<ProtectedRoute exact path="/edit">
 				<UserEditForm />
 			</ProtectedRoute>
 

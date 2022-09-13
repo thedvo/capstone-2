@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import UserContext from '../UserContext';
-import igCloneApi from '../api';
+import igCloneApi from '../Api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 /**  

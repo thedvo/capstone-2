@@ -1,0 +1,33 @@
+.PostCard {
+	border: 1px solid lightgray;
+	width: fit-content;
+	margin-bottom: 45px;
+	background-color: #ffffff;
+	max-width: 500px;
+}
+
+.PostCard-Image {
+	width: 100%;
+	object-fit: contain;
+}
+
+.PostCard-Avatar {
+	margin-right: 10px;
+}
+
+.PostCard-Header {
+	display: flex;
+	align-items: center;
+	text-align: left;
+	padding: 10px;
+	border-bottom: 1px solid lightgray;
+}
+
+.PostCard-Text {
+	padding: 10px;
+	text-align: left;
+}
+
+.PostCard-Caption {
+	font-weight: normal;
+}

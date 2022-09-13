@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import UserContext from './UserContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Home.css';
 
 const Home = () => {
 	const { currentUser } = useContext(UserContext);
