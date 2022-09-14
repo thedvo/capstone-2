@@ -47,8 +47,8 @@ function authenticateJWT(req, res, next) {
 
 function ensureLoggedIn(req, res, next) {
 	try {
-		// if (!res.locals.user)
-		if (!req.user)
+		if (!res.locals.user)
+			// if (!req.user)
 			throw new UnauthorizedError(`Unauthorized. Please sign up or login.`);
 		return next();
 	} catch (err) {
@@ -63,8 +63,9 @@ function verifyUserOrAdmin(req, res, next) {
 		// The res.locals is an object that contains the local variables for the response which are scoped to the request only and therefore just available for the views rendered during that request or response cycle.
 
 		// This property is useful while exposing the request-level information such as the request path name, user settings, authenticated user, etc.
-		// const user = res.locals.user;
-		const user = req.user;
+		const user = res.locals.user;
+		// const user = req.user;
+
 		// if not user AND admin or the userId matches the userId in the parameter
 		if (!(user && (user.isAdmin || user.username === req.params.username))) {
 			throw new UnauthorizedError();

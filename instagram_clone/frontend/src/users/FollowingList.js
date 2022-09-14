@@ -48,7 +48,7 @@ const FollowingList = () => {
 					))}
 				</div>
 			) : (
-				<p className="lead">Sorry, no results found.</p>
+				<p className="lead">{username} is not currently following anyone.</p>
 			)}
 		</div>
 	);

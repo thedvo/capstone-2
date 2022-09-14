@@ -28,17 +28,14 @@ const CommentForm = ({ postId }) => {
 	};
 
 	async function handleSubmit(e) {
-		e.preventDefault();
+		// e.preventDefault();
 		let res = await igCloneApi.addComment(
 			postId,
 			currentUser.username,
 			formData
 		);
-		if (res.success) {
-			history.push(`/posts/${postId}`);
-		} else {
-			setFormErrors(res.errors);
-		}
+
+		history.push(`/posts/${postId}`);
 		setFormData(INITIAL_STATE);
 		console.log('SUCCESS! Added a comment.');
 	}
@@ -46,7 +43,6 @@ const CommentForm = ({ postId }) => {
 	return (
 		<div className="PostForm">
 			<div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4">
-				<h2>Add Comment</h2>
 				<div className="card">
 					<div className="card-body">
 						<form onSubmit={handleSubmit}>

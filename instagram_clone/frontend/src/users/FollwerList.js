@@ -49,7 +49,7 @@ const FollowerList = () => {
 					))}
 				</div>
 			) : (
-				<p className="lead">Sorry, no results found.</p>
+				<p className="lead">{username} has no followers.</p>
 			)}
 		</div>
 	);

@@ -16,6 +16,7 @@ const PostCardList = ({ posts }) => {
 					caption={post.caption}
 					username={post.username}
 					userProfImg={post.profileImage}
+					datePosted={post.datePosted}
 				/>
 			))}
 		</div>

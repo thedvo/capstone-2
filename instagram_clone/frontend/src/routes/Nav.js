@@ -19,6 +19,11 @@ function Nav({ logout }) {
 					</NavLink>
 				</li>
 				<li className="nav-item me-4">
+					<NavLink className="nav-link" exact to="/posts/">
+						Explore
+					</NavLink>
+				</li>
+				<li className="nav-item me-4">
 					<NavLink className="nav-link" exact to="/profile">
 						Profile
 					</NavLink>

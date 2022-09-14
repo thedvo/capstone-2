@@ -42,7 +42,7 @@ const LikesList = () => {
 					))}
 				</div>
 			) : (
-				<p className="lead">Sorry, no results found.</p>
+				<p className="lead">{username} has not liked any posts yet.</p>
 			)}
 		</div>
 	);

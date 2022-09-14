@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import UserContext from '../UserContext';
+import { Link } from 'react-router-dom';
 
 import igCloneApi from '../Api';
 import SimplePostCard from '../posts/SimplePostCard';
@@ -7,23 +8,23 @@ import SimplePostCard from '../posts/SimplePostCard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Avatar from '@material-ui/core/Avatar';
 
-const UserDetail = () => {
-	const { username } = useParams();
+const CurrentUserDetail = () => {
+	const { currentUser } = useContext(UserContext);
 
-	console.log('UserDetail', 'username=', username);
+	console.log('UserDetail', 'username=', currentUser.username);
 
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		async function getUser() {
-			let user = await igCloneApi.getCurrentUser(username);
+			let user = await igCloneApi.getCurrentUser(currentUser.username);
 
 			setUser(user);
 			setIsLoading(false);
 		}
 		getUser();
-	}, [username]);
+	}, []);
 
 	if (isLoading) {
 		return (
@@ -50,17 +51,17 @@ const UserDetail = () => {
 			<p>{user.bio}</p>
 
 			<div>
-				<Link to={`/users/${username}/likes`}>
+				<Link to={`/users/${user.username}/likes`}>
 					<h4>Likes {user.likes.length}</h4>
 				</Link>
 			</div>
 			<div>
-				<Link to={`/users/${username}/following`}>
+				<Link to={`/users/${user.username}/following`}>
 					<h4>Following {user.following.length}</h4>
 				</Link>
 			</div>
 			<div>
-				<Link to={`/users/${username}/followers`}>
+				<Link to={`/users/${user.username}/followers`}>
 					<h4>Followers {user.followers.length}</h4>
 				</Link>
 			</div>
@@ -81,4 +82,4 @@ const UserDetail = () => {
 	);
 };
 
-export default UserDetail;
+export default CurrentUserDetail;

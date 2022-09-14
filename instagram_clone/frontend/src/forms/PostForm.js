@@ -7,7 +7,7 @@ const PostForm = () => {
 	const { currentUser } = useContext(UserContext);
 
 	const INITIAL_STATE = {
-		imageFile: '',
+		image_file: '',
 		caption: '',
 	};
 
@@ -25,11 +25,9 @@ const PostForm = () => {
 	async function handleSubmit(e) {
 		e.preventDefault();
 		let res = await igCloneApi.createPost(currentUser.username, formData);
-		if (res.success) {
-			history.push('/posts');
-		} else {
-			setFormErrors(res.errors);
-		}
+
+		history.push('/posts');
+		setFormErrors(res.errors);
 		setFormData(INITIAL_STATE);
 		console.log('SUCCESS! Post Created.');
 	}
@@ -42,15 +40,15 @@ const PostForm = () => {
 					<div className="card-body">
 						<form onSubmit={handleSubmit}>
 							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="imageFile">
+								<label className="form-label fw-bold" htmlFor="image_file">
 									Image File
 								</label>
 								<input
-									id="imageFile"
-									name="imageFile"
+									id="image_file"
+									name="image_file"
 									type="text"
 									onChange={handleChange}
-									value={formData.imageFile}
+									value={formData.image_file}
 									autoComplete="off"
 									className="form-control"
 								/>

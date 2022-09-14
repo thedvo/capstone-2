@@ -352,9 +352,9 @@ class User {
 			[userId]
 		);
 
-		if (likeResult.rows.length === 0) {
-			throw new ExpressError(`User: ${username} has no likes.`);
-		}
+		// if (likeResult.rows.length === 0) {
+		// 	throw new ExpressError(`User: ${username} has no likes.`);
+		// }
 
 		return likeResult.rows;
 	}
@@ -539,11 +539,11 @@ class User {
 			[userId]
 		);
 
-		if (result.rows.length === 0) {
-			throw new ExpressError(
-				`User: ${username} is currently not following anyone.`
-			);
-		}
+		// if (result.rows.length === 0) {
+		// 	throw new ExpressError(
+		// 		`User: ${username} is currently not following anyone.`
+		// 	);
+		// }
 
 		return result.rows;
 	}
@@ -577,9 +577,9 @@ class User {
 			[userId]
 		);
 
-		if (result.rows.length === 0) {
-			throw new ExpressError(`User: ${username} has no followers.`);
-		}
+		// if (result.rows.length === 0) {
+		// 	throw new ExpressError(`User: ${username} has no followers.`);
+		// }
 
 		return result.rows;
 	}

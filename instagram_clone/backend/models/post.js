@@ -61,7 +61,7 @@ class Post {
            FROM posts AS P
 		   LEFT JOIN users AS u
 		   ON u.id = p.user_id
-           ORDER BY p.date_posted`
+           ORDER BY p.date_posted DESC`
 		);
 
 		const allPosts = result.rows;

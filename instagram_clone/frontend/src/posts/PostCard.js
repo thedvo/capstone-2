@@ -10,7 +10,14 @@ import './postcard.css';
 Card contains (user profile image, username, post image, caption)
 */
 
-const PostCard = ({ id, postImage, caption, username, userProfImg }) => {
+const PostCard = ({
+	id,
+	postImage,
+	caption,
+	username,
+	userProfImg,
+	datePosted,
+}) => {
 	return (
 		<div className="PostCard">
 			{/* when user clicks anywhere on the header, it will link to the profile of the user who made the post */}
@@ -32,6 +39,7 @@ const PostCard = ({ id, postImage, caption, username, userProfImg }) => {
 					{username} <span className="PostCard-Caption">{caption}</span>
 				</h4>
 			</Link>
+			<p>Date Posted {datePosted}</p>
 		</div>
 	);
 };
