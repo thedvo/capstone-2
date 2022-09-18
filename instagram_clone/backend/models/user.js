@@ -183,7 +183,7 @@ class User {
 			[user.id]
 		);
 
-		user.likes = likesRes.rows;
+		user.likes = likesRes.rows.map((l) => l.post_id);
 
 		// query a user's comments
 		const userCommentsRes = await db.query(

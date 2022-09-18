@@ -38,7 +38,7 @@ const LikesList = () => {
 			{likes.length ? (
 				<div className="LikesList-list">
 					{likes.map((p) => (
-						<SimplePostCard id={p.id} imageFile={p.imageFile} />
+						<SimplePostCard id={p.postId} imageFile={p.imageFile} />
 					))}
 				</div>
 			) : (

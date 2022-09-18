@@ -29,7 +29,9 @@ Card contains (
 
 const PostDetail = () => {
 	// gather the necessary info needed for API calls (username, postId)
-	const { currentUser } = useContext(UserContext);
+	const { currentUser, likePost, unlikePost, hasLikedPost } = useContext(
+		UserContext
+	);
 	const { id } = useParams();
 
 	// useHistory used to reroute if currentUser deletes their own post
@@ -37,18 +39,27 @@ const PostDetail = () => {
 	const history = useHistory();
 
 	const [post, setPost] = useState(null);
+	const [liked, setLiked] = useState();
 	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		function updateLikeStatus() {
+			setLiked(hasLikedPost(id));
+		}
+		updateLikeStatus();
+	}, [id, hasLikedPost]);
 
 	// when route renders, make a request to get the post.
 	useEffect(() => {
 		async function getPost() {
 			let post = await igCloneApi.getPost(id);
 
+			// gets the post information
 			setPost(post);
 			setIsLoading(false);
 		}
 		getPost();
-	}, [id]);
+	}, [id, liked]);
 
 	if (isLoading) {
 		return (
@@ -57,6 +68,39 @@ const PostDetail = () => {
 			</p>
 		);
 	}
+
+	/** Show like or unlike button depending on the "liked" state. */
+	function likeButton() {
+		return (
+			<div>
+				<button onClick={handleLike}>Like</button>
+			</div>
+		);
+	}
+	function unLikeButton() {
+		return (
+			<div>
+				<button onClick={handleUnlike}>Unlike</button>
+			</div>
+		);
+	}
+
+	/** the likePost/unLikePost functions are passed down as prop from UserContext */
+	async function handleLike(e) {
+		likePost(id);
+		setLiked(true);
+		console.log(`Success, liked post: ${id}!`);
+	}
+
+	async function handleUnlike(e) {
+		unlikePost(id);
+		setLiked(false);
+		console.log('Unliked post!');
+	}
+
+	/** ************************************************************* */
+	// DELETING A POST (currentUser only)
+	/** ************************************************************* */
 
 	// handles event for deleting a post
 	async function handleDeletePost(e) {
@@ -77,6 +121,8 @@ const PostDetail = () => {
 		);
 	}
 
+	/** ************************************************************* */
+
 	return (
 		<div className="PostCard">
 			{/* Post Header (avatar + username) */}
@@ -93,6 +139,13 @@ const PostDetail = () => {
 
 			{/* Post Body (Image, Likes, Comments, Comment Form, Date */}
 			<img className="PostCard-Image" src={post.imageFile} alt="post-image" />
+			{/* ***************************************************************************************** */}
+			{/* ***************************************************************************************** */}
+
+			{!liked ? likeButton() : unLikeButton()}
+			{/* ***************************************************************************************** */}
+			{/* ***************************************************************************************** */}
+
 			<div>
 				<h4>{post.likes.length} Likes</h4>
 

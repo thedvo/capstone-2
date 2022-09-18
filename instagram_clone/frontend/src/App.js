@@ -30,6 +30,8 @@ function App() {
 	const [token, setToken] = useLocalStorage(null);
 	const [currentUser, setCurrentUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(TOKEN_STORAGE_ID);
+	const [likeIds, setLikeIds] = useState(new Set([]));
+	// utilized to save state for posts a user has liked. Use a Set because we don't want to be able to like a post more than once.
 
 	console.log(
 		'App',
@@ -54,6 +56,7 @@ function App() {
 						igCloneApi.token = token;
 						let currentUser = await igCloneApi.getCurrentUser(username);
 						setCurrentUser(currentUser);
+						setLikeIds(new Set(currentUser.likes));
 					} catch (err) {
 						console.error(err);
 						console.error('App loadUserInfo: problem loading', err);
@@ -102,10 +105,37 @@ function App() {
 		return <p>Loading &hellip;</p>;
 	}
 
+	function hasLikedPost(id) {
+		return likeIds.has(id);
+	}
+
+	function likePost(id) {
+		// first check if the post has been liked
+		if (hasLikedPost(id)) return;
+
+		// if not, like the post.
+		igCloneApi.likePost(currentUser.username, id);
+		setLikeIds(new Set([...likeIds, id]));
+		// creates a new set with the current data and the new post id added
+	}
+
+	function unlikePost(id) {
+		igCloneApi.unlikePost(currentUser.username, id);
+		likeIds.delete(id);
+	}
+
 	return (
 		<div className="App">
 			<BrowserRouter>
-				<UserContext.Provider value={{ currentUser, setCurrentUser }}>
+				<UserContext.Provider
+					value={{
+						currentUser,
+						setCurrentUser,
+						likePost,
+						unlikePost,
+						hasLikedPost,
+					}}
+				>
 					<div>
 						<Nav logout={logout} />
 						<Routes login={login} signup={signup} />

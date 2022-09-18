@@ -137,18 +137,14 @@ class igCloneApi {
 
 	/** Like a post */
 	static async likePost(username, postId) {
-		let res = await this.request(
-			`post/${postId}/${username}/like}`,
-			{},
-			'post'
-		);
+		let res = await this.request(`post/${postId}/${username}/like`, {}, 'post');
 		return res.like;
 	}
 
 	/** Unlike a post */
 	static async unlikePost(username, postId) {
 		let res = await this.request(
-			`post/${postId}/${username}/unlike}`,
+			`post/${postId}/${username}/unlike`,
 			{},
 			'delete'
 		);
