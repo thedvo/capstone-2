@@ -135,6 +135,12 @@ class igCloneApi {
 		return res.post;
 	}
 
+	/** Get a post's likes */
+	static async getPostLikes(postId) {
+		let res = await this.request(`post/${postId}/likes`);
+		return res.likes;
+	}
+
 	/** Like a post */
 	static async likePost(username, postId) {
 		let res = await this.request(`post/${postId}/${username}/like`, {}, 'post');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import UserContext from '../UserContext';
@@ -18,6 +18,9 @@ const PostCard = ({
 	userProfImg,
 	datePosted,
 }) => {
+	const { formatDate } = useContext(UserContext);
+	let date = formatDate(datePosted);
+
 	return (
 		<div className="PostCard">
 			{/* when user clicks anywhere on the header, it will link to the profile of the user who made the post */}
@@ -39,7 +42,7 @@ const PostCard = ({
 					{username} <span className="PostCard-Caption">{caption}</span>
 				</h4>
 			</Link>
-			<p>Date Posted {datePosted}</p>
+			<p> Posted {date}</p>
 		</div>
 	);
 };

@@ -13,6 +13,7 @@ import LikesList from '../users/LikesList';
 
 import PostList from '../posts/PostList';
 import PostDetail from '../posts/PostDetail';
+import PostLikesList from '../posts/PostLikesList';
 
 /** Forms */
 import LoginForm from '../forms/LoginForm';
@@ -51,6 +52,10 @@ const Routes = ({ login, signup }) => {
 			{/* Individual Post */}
 			<ProtectedRoute path="/posts/:id">
 				<PostDetail />
+			</ProtectedRoute>
+			{/* Individual Post's Likes */}
+			<ProtectedRoute path="/posts/:id/likes">
+				<PostLikesList />
 			</ProtectedRoute>
 			/*************************************************************************************************/
 			{/* USER ROUTES */}

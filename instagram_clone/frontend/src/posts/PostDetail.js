@@ -29,9 +29,13 @@ Card contains (
 
 const PostDetail = () => {
 	// gather the necessary info needed for API calls (username, postId)
-	const { currentUser, likePost, unlikePost, hasLikedPost } = useContext(
-		UserContext
-	);
+	const {
+		currentUser,
+		likePost,
+		unlikePost,
+		hasLikedPost,
+		formatDate,
+	} = useContext(UserContext);
 	const { id } = useParams();
 
 	// useHistory used to reroute if currentUser deletes their own post
@@ -123,6 +127,8 @@ const PostDetail = () => {
 
 	/** ************************************************************* */
 
+	let date = formatDate(post.datePosted);
+
 	return (
 		<div className="PostCard">
 			{/* Post Header (avatar + username) */}
@@ -139,14 +145,13 @@ const PostDetail = () => {
 
 			{/* Post Body (Image, Likes, Comments, Comment Form, Date */}
 			<img className="PostCard-Image" src={post.imageFile} alt="post-image" />
-			{/* ***************************************************************************************** */}
-			{/* ***************************************************************************************** */}
 
 			{!liked ? likeButton() : unLikeButton()}
-			{/* ***************************************************************************************** */}
-			{/* ***************************************************************************************** */}
 
 			<div>
+				{/* <h4>
+					<Link to={`/posts/${id}/likes`}>{post.likes.length} Likes </Link>
+				</h4> */}
 				<h4>{post.likes.length} Likes</h4>
 
 				<h4 className="PostCard-Text">
@@ -168,7 +173,7 @@ const PostDetail = () => {
 				<CommentForm postId={id} />
 			</div>
 
-			<p>{post.datePosted}</p>
+			<p>Posted {date}</p>
 
 			{currentUser.username === post.user[0].username
 				? postByCurrentUser()

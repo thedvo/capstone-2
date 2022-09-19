@@ -124,6 +124,11 @@ function App() {
 		likeIds.delete(id);
 	}
 
+	function formatDate(dateString) {
+		const options = { year: 'numeric', month: 'long', day: 'numeric' };
+		return new Date(dateString).toLocaleDateString(undefined, options);
+	}
+
 	return (
 		<div className="App">
 			<BrowserRouter>
@@ -134,6 +139,7 @@ function App() {
 						likePost,
 						unlikePost,
 						hasLikedPost,
+						formatDate,
 					}}
 				>
 					<div>
