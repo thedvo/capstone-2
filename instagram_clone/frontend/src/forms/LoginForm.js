@@ -43,7 +43,7 @@ const LoginForm = ({ login }) => {
 				<h2 className="mb-3">Log In</h2>
 				<div className="card">
 					<div className="card-body">
-						<form onSubmit={handleSubmit}>
+						<form onSubmit={handleSubmit} autoComplete="off">
 							<div className="mb-3">
 								<label className="form-label fw-bold" htmlFor="name">
 									Username

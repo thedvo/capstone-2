@@ -89,7 +89,7 @@ const UserEditForm = () => {
 			<h2>Profile</h2>
 			<div className="card">
 				<div className="card-body">
-					<form onSubmit={handleSubmit}>
+					<form onSubmit={handleSubmit} autoComplete="off">
 						<div className="mb-3">
 							<label className="form-label fw-bold">Username</label>
 							<p className="form-control-plaintext">@{formData.username}</p>

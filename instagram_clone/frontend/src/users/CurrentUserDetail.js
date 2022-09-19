@@ -34,6 +34,59 @@ const CurrentUserDetail = () => {
 		);
 	}
 
+	function noLikes() {
+		return (
+			<div>
+				<h4>Likes</h4>
+				<p>0</p>
+			</div>
+		);
+	}
+	function noFollowers() {
+		return (
+			<div>
+				<h4>Followers</h4>
+				<p>0</p>
+			</div>
+		);
+	}
+	function noFollowing() {
+		return (
+			<div>
+				<h4>Following</h4>
+				<p>0</p>
+			</div>
+		);
+	}
+
+	function hasLikes() {
+		return (
+			<div>
+				<Link to={`/users/${user.username}/likes`}>
+					<h4>Likes {user.likes.length}</h4>
+				</Link>
+			</div>
+		);
+	}
+	function hasFollowers() {
+		return (
+			<div>
+				<Link to={`/users/${user.username}/followers`}>
+					<h4>Followers {user.followers.length}</h4>
+				</Link>
+			</div>
+		);
+	}
+	function hasFollowing() {
+		return (
+			<div>
+				<Link to={`/users/${user.username}/following`}>
+					<h4>Following {user.following.length}</h4>
+				</Link>
+			</div>
+		);
+	}
+
 	return (
 		<div className="UserDetail col-md-8 offset-md-2 mt-4">
 			<div>
@@ -50,21 +103,9 @@ const CurrentUserDetail = () => {
 			</h4>
 			<p>{user.bio}</p>
 
-			<div>
-				<Link to={`/users/${user.username}/likes`}>
-					<h4>Likes {user.likes.length}</h4>
-				</Link>
-			</div>
-			<div>
-				<Link to={`/users/${user.username}/following`}>
-					<h4>Following {user.following.length}</h4>
-				</Link>
-			</div>
-			<div>
-				<Link to={`/users/${user.username}/followers`}>
-					<h4>Followers {user.followers.length}</h4>
-				</Link>
-			</div>
+			{user.likes.length > 0 ? hasLikes() : noLikes()}
+			{user.following.length > 0 ? hasFollowing() : noFollowing()}
+			{user.followers.length > 0 ? hasFollowers() : noFollowers()}
 
 			<div className="UserDetail-Posts col-md-8 offset-md-2">
 				{/* map out individual post components */}
