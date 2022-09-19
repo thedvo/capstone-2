@@ -80,7 +80,7 @@ class Post {
 
 	static async get(id) {
 		const postResult = await db.query(
-			`SELECT id AS postId,
+			`SELECT id AS "postId",
 		          image_file AS "imageFile",
 		          caption,
 		          date_posted AS "datePosted"
@@ -139,6 +139,27 @@ class Post {
 		post.comments = commentsRes.rows;
 
 		return post;
+	}
+
+	/** Get a post's 'likes'
+	 *
+	 * Will be used to display a list of users who have liked the post
+	 */
+	static async getPostLikes(id) {
+		const likesRes = await db.query(
+			`SELECT
+				l.user_id AS "userId",
+				u.username,
+				u.profile_image AS "profileImage"
+			FROM likes AS l
+			LEFT JOIN users AS u
+			ON l.user_id = u.id
+			WHERE l.post_id = $1`,
+			[id]
+		);
+
+		const likes = likesRes.rows;
+		return likes;
 	}
 
 	/** Delete given post from database; returns undefined.

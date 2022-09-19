@@ -539,12 +539,6 @@ class User {
 			[userId]
 		);
 
-		// if (result.rows.length === 0) {
-		// 	throw new ExpressError(
-		// 		`User: ${username} is currently not following anyone.`
-		// 	);
-		// }
-
 		return result.rows;
 	}
 

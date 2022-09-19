@@ -35,7 +35,7 @@ router.post(
 );
 
 /** Get all posts
- * 	Authorization Required: verifyUserOrAdmin
+ * 	Authorization Required: ensureLoggedIn
  */
 
 router.get('/', ensureLoggedIn, async function (req, res, next) {
@@ -48,13 +48,26 @@ router.get('/', ensureLoggedIn, async function (req, res, next) {
 });
 
 /** Get an individual post
- * Authorization Required: verifyUserOrAdmin
+ * Authorization Required: ensureLoggedIn
  *
  * */
 router.get('/:id', ensureLoggedIn, async function (req, res, next) {
 	try {
 		const post = await Post.get(req.params.id);
 		return res.json({ post });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+/** Get an individual post's likes
+ * Authorization Required: ensureLoggedIn
+ *
+ * */
+router.get('/:id/likes', ensureLoggedIn, async function (req, res, next) {
+	try {
+		const likes = await Post.getPostLikes(req.params.id);
+		return res.json({ likes });
 	} catch (err) {
 		return next(err);
 	}
