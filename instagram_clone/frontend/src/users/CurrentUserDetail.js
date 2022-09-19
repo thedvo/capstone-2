@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../UserContext';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import igCloneApi from '../Api';
 import SimplePostCard from '../posts/SimplePostCard';
@@ -10,8 +10,9 @@ import Avatar from '@material-ui/core/Avatar';
 
 const CurrentUserDetail = () => {
 	const { currentUser } = useContext(UserContext);
-
 	console.log('UserDetail', 'username=', currentUser.username);
+
+	const history = useHistory();
 
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -87,6 +88,10 @@ const CurrentUserDetail = () => {
 		);
 	}
 
+	async function handleDeleteProfile() {
+		await igCloneApi.deleteUser(user.username);
+	}
+
 	return (
 		<div className="UserDetail col-md-8 offset-md-2 mt-4">
 			<div>
@@ -107,6 +112,12 @@ const CurrentUserDetail = () => {
 			{user.following.length > 0 ? hasFollowing() : noFollowing()}
 			{user.followers.length > 0 ? hasFollowers() : noFollowers()}
 
+			<div>
+				<Link to={'/edit'}>
+					<button className="btn btn-primary">Edit Profile</button>
+				</Link>
+			</div>
+
 			<div className="UserDetail-Posts col-md-8 offset-md-2">
 				{/* map out individual post components */}
 				{user.posts.length ? (
@@ -118,6 +129,11 @@ const CurrentUserDetail = () => {
 				) : (
 					<p className="lead">User currently has no posts.</p>
 				)}
+			</div>
+			<div>
+				<form onSubmit={handleDeleteProfile}>
+					<button className="btn btn-danger">Delete Profile</button>
+				</form>
 			</div>
 		</div>
 	);

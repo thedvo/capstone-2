@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../UserContext';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import igCloneApi from '../Api';
 import UserCard from './UserCard';
@@ -35,6 +35,11 @@ const FollowerList = () => {
 
 	return (
 		<div className="FollowerList col-md-8 offset-md-2">
+			<div>
+				<Link to={`/users/${username}`}>
+					<button className="btn btn-light mb-4">Back to Profile</button>
+				</Link>
+			</div>
 			{/* map out individual user components */}
 			{followers.length ? (
 				<div className="FollowerList-list">

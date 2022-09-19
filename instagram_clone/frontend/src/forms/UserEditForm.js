@@ -1,4 +1,7 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
+
 import UserContext from '../UserContext';
 import igCloneApi from '../Api';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,12 +19,13 @@ const UserEditForm = () => {
 	// import currentUser so that we can use the logged in user's info as the default placeholders for the form.
 	// import setCurrentUser to update currentUser once the form is submitted
 
+	const history = useHistory();
 	const INITIAL_STATE = {
 		username: currentUser.username,
-		firstName: currentUser.firstName,
-		lastName: currentUser.lastName,
+		first_name: currentUser.firstName,
+		last_name: currentUser.lastName,
 		email: currentUser.email,
-		profileImage: currentUser.profileImage,
+		profile_image: currentUser.profileImage,
 		bio: currentUser.bio,
 		password: '',
 		// leave password empty because the user will enter it themselves to confirm changes at submission
@@ -56,10 +60,10 @@ const UserEditForm = () => {
 
 		// create separate variables for profile form data and username so that we can pass it to the API request (saveProfile)
 		let profileData = {
-			firstName: formData.firstName,
-			lastName: formData.lastName,
+			first_name: formData.first_name,
+			last_name: formData.last_name,
 			email: formData.email,
-			profileImage: formData.profileImage,
+			profile_image: formData.profile_image,
 			bio: formData.bio,
 			password: formData.password,
 		};
@@ -81,6 +85,7 @@ const UserEditForm = () => {
 		setFormData((formData) => ({ ...formData, password: '' }));
 		setFormErrors([]);
 		setCurrentUser(updatedUser);
+		history.push('/profile'); //redirect to user profile once edits are complete
 		console.log('SUCCESS!', updatedUser);
 	}
 
@@ -95,25 +100,25 @@ const UserEditForm = () => {
 							<p className="form-control-plaintext">@{formData.username}</p>
 						</div>
 						<div className="mb-3">
-							<label className="form-label fw-bold" htmlFor="firstName">
+							<label className="form-label fw-bold" htmlFor="first_name">
 								First Name
 							</label>
 							<input
-								name="firstName"
+								name="first_name"
 								type="text"
-								value={formData.firstName}
+								value={formData.first_name}
 								onChange={handleChange}
 								className="form-control"
 							/>
 						</div>
 						<div className="mb-3">
-							<label className="form-label fw-bold" htmlFor="lastName">
+							<label className="form-label fw-bold" htmlFor="last_name">
 								Last Name
 							</label>
 							<input
-								name="lastName"
+								name="last_name"
 								type="text"
-								value={formData.lastName}
+								value={formData.last_name}
 								onChange={handleChange}
 								className="form-control"
 							/>
@@ -131,13 +136,13 @@ const UserEditForm = () => {
 							/>
 						</div>
 						<div className="mb-3">
-							<label className="form-label fw-bold" htmlFor="profileImage">
+							<label className="form-label fw-bold" htmlFor="profile_image">
 								Profile Image
 							</label>
 							<input
-								name="profileImage"
+								name="profile_image"
 								type="text"
-								value={formData.profileImage}
+								value={formData.profile_image}
 								onChange={handleChange}
 								className="form-control"
 							/>
@@ -171,6 +176,11 @@ const UserEditForm = () => {
 						</div>
 					</form>
 				</div>
+			</div>
+			<div>
+				<Link to={'/profile'}>
+					<button className="btn btn-light mt-4">Back to Profile</button>
+				</Link>
 			</div>
 		</div>
 	);
