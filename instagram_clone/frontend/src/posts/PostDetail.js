@@ -152,7 +152,7 @@ const PostDetail = () => {
 			</div>
 
 			{/* Post Body (Image, Likes, Comments, Comment Form, Date */}
-			<img className="PostCard-Image" src={post.imageFile} alt="post-image" />
+			<img className="PostCard-Image" src={post.imageFile} alt="post" />
 
 			{!liked ? likeButton() : unLikeButton()}
 
@@ -171,7 +171,7 @@ const PostDetail = () => {
 
 				{/* map the comments*/}
 				{post.comments.map((comment) => (
-					<div>
+					<div key={comment.id}>
 						<Link to={`/users/${comment.username}`}>
 							<span>{comment.username}</span>
 						</Link>

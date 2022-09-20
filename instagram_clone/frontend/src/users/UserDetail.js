@@ -30,14 +30,6 @@ const UserDetail = () => {
 		getUser();
 	}, [username, followed, unfollowed]);
 
-	// useEffect(() => {
-	// 	function updateFollowStatus() {
-	// 		setFollowed(hasFollowedUser(user.id) === true);
-	// 		setUnfollowed(hasFollowedUser(user.id) === false);
-	// 	}
-	// 	updateFollowStatus();
-	// }, [username, hasFollowedUser]);
-
 	console.log(followed);
 	console.log(unfollowed);
 
@@ -156,7 +148,7 @@ const UserDetail = () => {
 				{user.posts.length ? (
 					<div className="CompanyList-list">
 						{user.posts.map((p) => (
-							<SimplePostCard id={p.id} imageFile={p.imageFile} />
+							<SimplePostCard key={p.id} id={p.id} imageFile={p.imageFile} />
 						))}
 					</div>
 				) : (

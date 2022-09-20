@@ -38,9 +38,8 @@ const Routes = ({ login, signup }) => {
 			<Route exact path="/">
 				<Home />
 			</Route>
-			/***************************************************************************************************/
-			{/* INSTAGRAM POST ROUTES  */}
-			/***************************************************************************************************/
+
+			{/* ************************* POST ROUTES ***********************************************************/}
 			{/* Shows list of Posts */}
 			<ProtectedRoute exact path="/posts">
 				<PostList />
@@ -57,9 +56,8 @@ const Routes = ({ login, signup }) => {
 			<ProtectedRoute path="/posts/:id/likes">
 				<PostLikesList />
 			</ProtectedRoute>
-			/*************************************************************************************************/
-			{/* USER ROUTES */}
-			/*************************************************************************************************/
+
+			{/* ************************* USER ROUTES ***********************************************************/}
 			{/* Display current user's profile */}
 			<ProtectedRoute exact path="/profile">
 				<CurrentUserDetail />
@@ -84,9 +82,8 @@ const Routes = ({ login, signup }) => {
 			<ProtectedRoute exact path="/edit">
 				<UserEditForm />
 			</ProtectedRoute>
-			/*************************************************************************************************/
-			{/* AUTHORIZATION ROUTES */}
-			/*************************************************************************************************/
+
+			{/* ************************* AUTHORIZATION ROUTES ***********************************************************/}
 			{/* Displays User Login Form */}
 			<Route exact path="/login">
 				<LoginForm login={login} />

@@ -57,7 +57,7 @@ function Nav({ logout }) {
 
 	return (
 		<nav className="Navigation navbar navbar-expand-lg mb-4">
-			<div class="container-fluid">
+			<div className="container-fluid">
 				<NavLink className="navbar-brand" exact to="/">
 					Instagram
 				</NavLink>

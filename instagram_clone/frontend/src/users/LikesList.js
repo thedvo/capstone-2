@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import UserContext from '../UserContext';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 import igCloneApi from '../Api';
@@ -43,7 +42,11 @@ const LikesList = () => {
 			{likes.length ? (
 				<div className="LikesList-list">
 					{likes.map((p) => (
-						<SimplePostCard id={p.postId} imageFile={p.imageFile} />
+						<SimplePostCard
+							key={p.postId}
+							id={p.postId}
+							imageFile={p.imageFile}
+						/>
 					))}
 				</div>
 			) : (

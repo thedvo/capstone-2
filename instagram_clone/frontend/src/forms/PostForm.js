@@ -41,16 +41,17 @@ const PostForm = () => {
 						<form onSubmit={handleSubmit}>
 							<div className="mb-3">
 								<label className="form-label fw-bold" htmlFor="image_file">
-									Image File
+									Image File (URL)
 								</label>
 								<input
 									id="image_file"
 									name="image_file"
-									type="text"
+									type="url"
 									onChange={handleChange}
 									value={formData.image_file}
 									autoComplete="off"
 									className="form-control"
+									required
 								/>
 							</div>
 							<div className="mb-3">
@@ -65,6 +66,7 @@ const PostForm = () => {
 									value={formData.caption}
 									autoComplete="off"
 									className="form-control"
+									required
 								/>
 							</div>
 							<button className="btn btn-primary float-end">Submit</button>

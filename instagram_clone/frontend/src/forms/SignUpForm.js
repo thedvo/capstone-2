@@ -59,6 +59,7 @@ const SignUpForm = ({ signup }) => {
 									value={formData.username}
 									autoComplete="off"
 									className="form-control"
+									required
 								/>
 							</div>
 							<div className="mb-3">
@@ -73,6 +74,7 @@ const SignUpForm = ({ signup }) => {
 									value={formData.password}
 									autoComplete="off"
 									className="form-control"
+									required
 								/>
 							</div>
 							<div className="mb-3">
@@ -87,6 +89,7 @@ const SignUpForm = ({ signup }) => {
 									value={formData.firstName}
 									autoComplete="off"
 									className="form-control"
+									required
 								/>
 							</div>
 							<div className="mb-3">
@@ -101,6 +104,7 @@ const SignUpForm = ({ signup }) => {
 									value={formData.lastName}
 									autoComplete="off"
 									className="form-control"
+									required
 								/>
 							</div>
 							<div className="mb-3">
@@ -115,6 +119,7 @@ const SignUpForm = ({ signup }) => {
 									value={formData.email}
 									autoComplete="off"
 									className="form-control"
+									required
 								/>
 							</div>
 							<button className="btn btn-primary float-end">Submit</button>

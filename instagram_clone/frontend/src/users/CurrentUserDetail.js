@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../UserContext';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import igCloneApi from '../Api';
 import SimplePostCard from '../posts/SimplePostCard';
@@ -11,8 +11,6 @@ import Avatar from '@material-ui/core/Avatar';
 const CurrentUserDetail = () => {
 	const { currentUser } = useContext(UserContext);
 	console.log('UserDetail', 'username=', currentUser.username);
-
-	const history = useHistory();
 
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);

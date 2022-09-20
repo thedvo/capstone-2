@@ -11,16 +11,9 @@ const CommentForm = ({ postId }) => {
 	};
 
 	const [formData, setFormData] = useState(INITIAL_STATE);
-	const [formErrors, setFormErrors] = useState([]);
 	const history = useHistory();
 
-	console.debug(
-		'CommentForm',
-		'formData=',
-		formData,
-		'formErrors=',
-		formErrors
-	);
+	console.debug('CommentForm', 'formData=', formData);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -29,11 +22,7 @@ const CommentForm = ({ postId }) => {
 
 	async function handleSubmit(e) {
 		// e.preventDefault();
-		let res = await igCloneApi.addComment(
-			postId,
-			currentUser.username,
-			formData
-		);
+		await igCloneApi.addComment(postId, currentUser.username, formData);
 
 		history.push(`/posts/${postId}`);
 		setFormData(INITIAL_STATE);
@@ -58,6 +47,7 @@ const CommentForm = ({ postId }) => {
 									value={formData.comment}
 									autoComplete="off"
 									className="form-control"
+									required
 								/>
 							</div>
 							<button className="btn btn-primary float-end">Submit</button>

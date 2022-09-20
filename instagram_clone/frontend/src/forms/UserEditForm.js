@@ -169,9 +169,10 @@ const UserEditForm = () => {
 								value={formData.password}
 								onChange={handleChange}
 								className="form-control"
+								required
 							/>
 						</div>
-						<div class="d-grid gap-2">
+						<div className="d-grid gap-2">
 							<button className="btn btn-primary mt-4">Save Changes</button>
 						</div>
 					</form>

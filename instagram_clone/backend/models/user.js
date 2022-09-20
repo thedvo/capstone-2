@@ -183,7 +183,7 @@ class User {
 			[user.id]
 		);
 
-		user.likes = likesRes.rows.map((l) => l.post_id);
+		user.likes = likesRes.rows.map((l) => l.postId);
 
 		// query a user's comments
 		const userCommentsRes = await db.query(
@@ -214,7 +214,7 @@ class User {
 			[user.id]
 		);
 
-		user.following = userFollowingRes.rows;
+		user.following = userFollowingRes.rows.map((u) => u.id);
 
 		// query a user's followers
 		const userFollowersRes = await db.query(
@@ -228,7 +228,7 @@ class User {
 			[user.id]
 		);
 
-		user.followers = userFollowersRes.rows;
+		user.followers = userFollowersRes.rows.map((u) => u.id);
 
 		return user;
 	}
