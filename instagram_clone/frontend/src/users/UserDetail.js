@@ -1,29 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 import igCloneApi from '../Api';
+import UserContext from '../UserContext';
 import SimplePostCard from '../posts/SimplePostCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Avatar from '@material-ui/core/Avatar';
 
 const UserDetail = () => {
+	const { followUser, unfollowUser, hasFollowedUser } = useContext(UserContext);
 	const { username } = useParams();
 
 	console.log('UserDetail', 'username=', username);
 
 	const [user, setUser] = useState(null);
+	const [followed, setFollowed] = useState();
+	const [unfollowed, setUnfollowed] = useState();
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		async function getUser() {
 			let user = await igCloneApi.getCurrentUser(username);
-
 			setUser(user);
 			setIsLoading(false);
+			setFollowed(hasFollowedUser(user.id) === true);
+			setUnfollowed(hasFollowedUser(user.id) === false);
 		}
 		getUser();
-	}, [username]);
+	}, [username, followed, unfollowed]);
+
+	// useEffect(() => {
+	// 	function updateFollowStatus() {
+	// 		setFollowed(hasFollowedUser(user.id) === true);
+	// 		setUnfollowed(hasFollowedUser(user.id) === false);
+	// 	}
+	// 	updateFollowStatus();
+	// }, [username, hasFollowedUser]);
+
+	console.log(followed);
+	console.log(unfollowed);
+
+	async function handleFollow(e) {
+		followUser(user.id);
+		setFollowed(true);
+		setUnfollowed(false);
+		console.log(`Success, followed user: ${username}!`);
+	}
+
+	async function handleUnfollow(e) {
+		unfollowUser(user.id);
+		setFollowed(false);
+		setUnfollowed(true);
+		console.log(`Unfollowed ${username}!`);
+	}
 
 	if (isLoading) {
 		return (
@@ -86,6 +116,21 @@ const UserDetail = () => {
 		);
 	}
 
+	function followButton() {
+		return (
+			<div>
+				<button onClick={handleFollow}>Follow</button>
+			</div>
+		);
+	}
+	function unfollowButton() {
+		return (
+			<div>
+				<button onClick={handleUnfollow}>Unfollow</button>
+			</div>
+		);
+	}
+
 	return (
 		<div className="UserDetail col-md-8 offset-md-2 mt-4">
 			<div>
@@ -97,15 +142,15 @@ const UserDetail = () => {
 				<h4>{user.username}</h4>
 			</div>
 
+			{!followed ? followButton() : unfollowButton()}
+
 			<h4>
 				{user.firstName} {user.lastName}
 			</h4>
 			<p>{user.bio}</p>
-
 			{user.likes.length > 0 ? hasLikes() : noLikes()}
 			{user.following.length > 0 ? hasFollowing() : noFollowing()}
 			{user.followers.length > 0 ? hasFollowers() : noFollowers()}
-
 			<div className="UserDetail-Posts col-md-8 offset-md-2">
 				{/* map out individual post components */}
 				{user.posts.length ? (

@@ -32,7 +32,11 @@ function App() {
 	const [isLoading, setIsLoading] = useState(TOKEN_STORAGE_ID);
 	const [likeIds, setLikeIds] = useState(new Set([]));
 	// utilized to save state for posts a user has liked. Use a Set because we don't want to be able to like a post more than once.
+	const [followIds, setFollowIds] = useState(new Set([]));
+	// utilized to save state for users a user follows.
 
+	console.log('FollowIds', followIds);
+	console.log('LikeIds', likeIds);
 	console.log(
 		'App',
 		'isLoading=',
@@ -57,6 +61,7 @@ function App() {
 						let currentUser = await igCloneApi.getCurrentUser(username);
 						setCurrentUser(currentUser);
 						setLikeIds(new Set(currentUser.likes));
+						setFollowIds(new Set(currentUser.following));
 					} catch (err) {
 						console.error(err);
 						console.error('App loadUserInfo: problem loading', err);
@@ -70,6 +75,10 @@ function App() {
 		},
 		[token]
 	);
+
+	/** *********************************************************** */
+	// USER AUTH
+	/** *********************************************************** */
 
 	/* handles signup */
 	async function signup(data) {
@@ -105,24 +114,59 @@ function App() {
 		return <p>Loading &hellip;</p>;
 	}
 
+	/** *********************************************************** */
+	// Like/Unlike a Post
+	/** *********************************************************** */
 	function hasLikedPost(id) {
-		return likeIds.has(id);
+		console.log(id);
+		console.log(likeIds);
+		return likeIds.has(+id);
 	}
 
-	function likePost(id) {
+	async function likePost(id) {
 		// first check if the post has been liked
-		if (hasLikedPost(id)) return;
+		if (hasLikedPost(+id)) return;
 
 		// if not, like the post.
-		igCloneApi.likePost(currentUser.username, id);
-		setLikeIds(new Set([...likeIds, id]));
+		await igCloneApi.likePost(currentUser.username, id);
+		setLikeIds(new Set([...likeIds, +id]));
+		console.log(likeIds);
+		console.log(id);
 		// creates a new set with the current data and the new post id added
 	}
 
-	function unlikePost(id) {
-		igCloneApi.unlikePost(currentUser.username, id);
-		likeIds.delete(id);
+	async function unlikePost(id) {
+		await igCloneApi.unlikePost(currentUser.username, id);
+		likeIds.delete(+id);
+		console.log(likeIds);
+		console.log(id);
 	}
+
+	/** *********************************************************** */
+	// Follow/Unfollow a User
+	/** *********************************************************** */
+	function hasFollowedUser(id) {
+		console.log(followIds);
+		return followIds.has(+id);
+	}
+
+	async function followUser(id) {
+		if (hasFollowedUser(+id)) return;
+
+		await igCloneApi.followUser(currentUser.username, id);
+		setFollowIds(new Set([...followIds, +id]));
+		console.log(followIds);
+	}
+
+	async function unfollowUser(id) {
+		await igCloneApi.unfollowUser(currentUser.username, id);
+		followIds.delete(+id);
+		console.log(followIds);
+	}
+
+	/** *********************************************************** */
+	// Format Date String for datePosted (posts)
+	/** *********************************************************** */
 
 	function formatDate(dateString) {
 		const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -140,6 +184,9 @@ function App() {
 						unlikePost,
 						hasLikedPost,
 						formatDate,
+						hasFollowedUser,
+						followUser,
+						unfollowUser,
 					}}
 				>
 					<div>

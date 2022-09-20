@@ -85,7 +85,7 @@ class igCloneApi {
 	/** Follow a user */
 	static async followUser(username, userFollowed) {
 		let res = await this.request(
-			`user/${username}/follow/${userFollowed}}`,
+			`user/${username}/follow/${userFollowed}`,
 			{},
 			'post'
 		);

@@ -44,15 +44,19 @@ const PostDetail = () => {
 
 	const [post, setPost] = useState(null);
 	const [liked, setLiked] = useState();
+	const [unliked, setUnliked] = useState();
 	const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		function updateLikeStatus() {
-			setLiked(hasLikedPost(id));
-		}
-		updateLikeStatus();
-	}, [id, hasLikedPost]);
+	// useEffect(() => {
+	// 	function updateLikeStatus() {
+	// 		setLiked(hasLikedPost(id) === true);
+	// 		setUnliked(hasLikedPost(id) === false);
+	// 	}
+	// 	updateLikeStatus();
+	// }, [id, hasLikedPost]);
 
+	console.log(liked);
+	console.log(unliked);
 	// when route renders, make a request to get the post.
 	useEffect(() => {
 		async function getPost() {
@@ -61,9 +65,11 @@ const PostDetail = () => {
 			// gets the post information
 			setPost(post);
 			setIsLoading(false);
+			setLiked(hasLikedPost(id) === true);
+			setUnliked(hasLikedPost(id) === false);
 		}
 		getPost();
-	}, [id, liked]);
+	}, [id, liked, unliked]);
 
 	if (isLoading) {
 		return (
@@ -93,12 +99,14 @@ const PostDetail = () => {
 	async function handleLike(e) {
 		likePost(id);
 		setLiked(true);
+		setUnliked(false);
 		console.log(`Success, liked post: ${id}!`);
 	}
 
 	async function handleUnlike(e) {
 		unlikePost(id);
 		setLiked(false);
+		setUnliked(true);
 		console.log('Unliked post!');
 	}
 
