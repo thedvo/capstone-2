@@ -137,6 +137,22 @@ const PostDetail = () => {
 
 	let date = formatDate(post.datePosted);
 
+	function linkToProfile(comment) {
+		return (
+			<Link to={`/profile`}>
+				<span>{comment.username}</span>
+			</Link>
+		);
+	}
+
+	function linkToUser(comment) {
+		return (
+			<Link to={`/users/${comment.username}`}>
+				<span>{comment.username}</span>
+			</Link>
+		);
+	}
+
 	return (
 		<div className="PostCard">
 			{/* Post Header (avatar + username) */}
@@ -172,9 +188,9 @@ const PostDetail = () => {
 				{/* map the comments*/}
 				{post.comments.map((comment) => (
 					<div key={comment.id}>
-						<Link to={`/users/${comment.username}`}>
-							<span>{comment.username}</span>
-						</Link>
+						{comment.username === currentUser.username
+							? linkToProfile(comment)
+							: linkToUser(comment)}
 						<p>{comment.comment}</p>
 					</div>
 				))}

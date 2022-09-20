@@ -30,8 +30,8 @@ const UserDetail = () => {
 		getUser();
 	}, [username, followed, unfollowed]);
 
-	console.log(followed);
-	console.log(unfollowed);
+	// console.log(followed);
+	// console.log(unfollowed);
 
 	async function handleFollow(e) {
 		followUser(user.id);

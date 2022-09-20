@@ -19,7 +19,7 @@ import useLocalStorage from './hooks/useLocalStorage';
  --> login()  [passed to Routes --> LoginForm component]
  --> logout() [passed to Nav]
 
-Use useEffect to call the backend to get information on the newly-logged-in-user and stire it in currentUser state whenever the state of token changes. 
+Use useEffect to call the backend to get information on the newly-logged-in-user and store it in currentUser state whenever the state of token changes. 
 
  */
 
@@ -31,7 +31,7 @@ function App() {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(TOKEN_STORAGE_ID);
 	const [likeIds, setLikeIds] = useState(new Set([]));
-	// utilized to save state for posts a user has liked. Use a Set because we don't want to be able to like a post more than once.
+	// utilized to save state for posts a user has liked. Use a Set because we don't want to be able to like one post more than once.
 	const [followIds, setFollowIds] = useState(new Set([]));
 	// utilized to save state for users a user follows.
 
@@ -118,8 +118,8 @@ function App() {
 	// Like/Unlike a Post
 	/** *********************************************************** */
 	function hasLikedPost(id) {
-		console.log(id);
-		console.log(likeIds);
+		// console.log(id);
+		// console.log(likeIds);
 		return likeIds.has(+id);
 	}
 
@@ -130,23 +130,23 @@ function App() {
 		// if not, like the post.
 		await igCloneApi.likePost(currentUser.username, id);
 		setLikeIds(new Set([...likeIds, +id]));
-		console.log(likeIds);
-		console.log(id);
+		// console.log(likeIds);
+		// console.log(id);
 		// creates a new set with the current data and the new post id added
 	}
 
 	async function unlikePost(id) {
 		await igCloneApi.unlikePost(currentUser.username, id);
 		likeIds.delete(+id);
-		console.log(likeIds);
-		console.log(id);
+		// console.log(likeIds);
+		// console.log(id);
 	}
 
 	/** *********************************************************** */
 	// Follow/Unfollow a User
 	/** *********************************************************** */
 	function hasFollowedUser(id) {
-		console.log(followIds);
+		// console.log(followIds);
 		return followIds.has(+id);
 	}
 
@@ -155,13 +155,13 @@ function App() {
 
 		await igCloneApi.followUser(currentUser.username, id);
 		setFollowIds(new Set([...followIds, +id]));
-		console.log(followIds);
+		// console.log(followIds);
 	}
 
 	async function unfollowUser(id) {
 		await igCloneApi.unfollowUser(currentUser.username, id);
 		followIds.delete(+id);
-		console.log(followIds);
+		// console.log(followIds);
 	}
 
 	/** *********************************************************** */

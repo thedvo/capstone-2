@@ -12,15 +12,15 @@ function Nav({ logout }) {
 	function loggedInNav() {
 		return (
 			<ul className="navbar-nav ms-auto">
+				<li className="nav-item me-4">
+					<NavLink className="nav-link" exact to="/posts/">
+						Explore
+					</NavLink>
+				</li>
 				{/* link to create a post */}
 				<li className="nav-item me-4">
 					<NavLink className="nav-link" exact to="/posts/create">
 						Create (+)
-					</NavLink>
-				</li>
-				<li className="nav-item me-4">
-					<NavLink className="nav-link" exact to="/posts/">
-						Explore
 					</NavLink>
 				</li>
 				<li className="nav-item me-4">
