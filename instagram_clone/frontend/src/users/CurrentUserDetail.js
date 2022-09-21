@@ -6,7 +6,9 @@ import igCloneApi from '../Api';
 import SimplePostCard from '../posts/SimplePostCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@mui/material/Avatar';
+
 import './CurrentUserDetail.css';
 
 const CurrentUserDetail = () => {
@@ -37,27 +39,27 @@ const CurrentUserDetail = () => {
 	function noLikes() {
 		return (
 			<div className="CurrentUser-Likes">
-				<h5>
-					<span>0</span> Likes
-				</h5>
+				<p>
+					<span className="UserDetail-Number">0</span> likes
+				</p>
 			</div>
 		);
 	}
 	function noFollowers() {
 		return (
 			<div className="CurrentUser-Followers">
-				<h5>
-					<span>0</span> Followers
-				</h5>
+				<p>
+					<span className="UserDetail-Number">0</span> followers
+				</p>
 			</div>
 		);
 	}
 	function noFollowing() {
 		return (
 			<div className="CurrentUser-Following">
-				<h5>
-					<span>0</span> Following
-				</h5>
+				<p>
+					<span className="UserDetail-Number">0</span> following
+				</p>
 			</div>
 		);
 	}
@@ -69,10 +71,10 @@ const CurrentUserDetail = () => {
 					to={`/users/${user.username}/likes`}
 					style={{ textDecoration: 'none' }}
 				>
-					<h5 className="UserDetail-Title">
+					<p className="UserDetail-Title">
 						{' '}
-						<span className="UserDetail-Number">{user.likes.length}</span> Likes
-					</h5>
+						<span className="UserDetail-Number">{user.likes.length}</span> likes
+					</p>
 				</Link>
 			</div>
 		);
@@ -84,10 +86,10 @@ const CurrentUserDetail = () => {
 					to={`/users/${user.username}/followers`}
 					style={{ textDecoration: 'none' }}
 				>
-					<h5 className="UserDetail-Title">
+					<p className="UserDetail-Title">
 						<span className="UserDetail-Number">{user.followers.length}</span>
-						Followers
-					</h5>
+						followers
+					</p>
 				</Link>
 			</div>
 		);
@@ -99,10 +101,10 @@ const CurrentUserDetail = () => {
 					to={`/users/${user.username}/following`}
 					style={{ textDecoration: 'none' }}
 				>
-					<h5 className="UserDetail-Title">
+					<p className="UserDetail-Title">
 						<span className="UserDetail-Number">{user.following.length}</span>{' '}
-						Following
-					</h5>
+						following
+					</p>
 				</Link>
 			</div>
 		);
@@ -116,16 +118,20 @@ const CurrentUserDetail = () => {
 		<div className="UserDetail container col-md-8 offset-md-2 mt-4">
 			<div className="row">
 				{/* <div className="UserDetail-Header"> */}
-				<div className="col">
-					<div className="UserDetail-Avatar">
-						<Avatar alt={user.username} src={user.profileImage} />
+				<div className="col-3">
+					<div>
+						<img
+							className="UserDetail-Avatar"
+							alt={user.username}
+							src={user.profileImage}
+						/>
 					</div>
 				</div>
-				<div className="col-10">
+				<div className="col-9">
 					<div className="row">
 						<div className="col-2">
 							<div className="UserDetail-Username">
-								<h4>{user.username}</h4>
+								<h3>{user.username}</h3>
 							</div>
 						</div>
 						<div className="UserDetail-Details col-2">
