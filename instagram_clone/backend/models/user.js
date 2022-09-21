@@ -164,7 +164,8 @@ class User {
 				  caption,
 				  date_posted AS "datePosted"
 			FROM posts
-			WHERE user_id = $1`,
+			WHERE user_id = $1
+			ORDER BY date_posted DESC`,
 			[user.id]
 		);
 
