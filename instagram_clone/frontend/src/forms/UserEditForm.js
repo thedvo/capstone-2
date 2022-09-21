@@ -92,6 +92,7 @@ const UserEditForm = () => {
 	return (
 		<div className="col-mb-6 col-lg-4 offset-md-3 offset-lg-4 mt-4">
 			<h2>Profile</h2>
+
 			<div className="card">
 				<div className="card-body">
 					<form onSubmit={handleSubmit} autoComplete="off">
@@ -151,13 +152,14 @@ const UserEditForm = () => {
 							<label className="form-label fw-bold" htmlFor="bio">
 								Bio
 							</label>
-							<input
+							<textarea
 								name="bio"
 								type="text"
 								value={formData.bio}
 								onChange={handleChange}
 								className="form-control"
-							/>
+								rows="2"
+							></textarea>
 						</div>
 						<div className="mb-1">
 							<label className="form-label fw-bold" htmlFor="password">

@@ -166,7 +166,7 @@ const PostDetail = () => {
 				<Avatar
 					className="PostDetail-Avatar"
 					alt={post.user[0].username}
-					src={post.profileImage}
+					src={post.user[0].profileImage}
 				/>
 				<Link
 					to={`/users/${post.user[0].username}`}
