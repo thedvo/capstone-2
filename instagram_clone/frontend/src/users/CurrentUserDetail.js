@@ -137,14 +137,18 @@ const CurrentUserDetail = () => {
 						<div className="UserDetail-Details col-2">
 							<div className="UserDetail-EditBtn">
 								<Link to={'/edit'}>
-									<button className="btn btn-primary">Edit Profile</button>
+									<button className="btn btn-outline-secondary">
+										Edit Profile
+									</button>
 								</Link>
 							</div>
 						</div>
 						<div className="col-3">
 							<div className="UserDetail-DeleteBtn">
 								<form onSubmit={handleDeleteProfile}>
-									<button className="btn btn-danger">Delete Profile</button>
+									<button className="btn btn-outline-danger">
+										Delete Profile
+									</button>
 								</form>
 							</div>
 						</div>
@@ -172,7 +176,7 @@ const CurrentUserDetail = () => {
 					</div>
 				</div>
 			</div>
-			<div className="row mt-5">
+			<div className="row mt-4">
 				<div className="UserDetail-Posts">
 					{/* map out individual post components */}
 					{user.posts.length ? (

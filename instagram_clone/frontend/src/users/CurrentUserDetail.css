@@ -19,3 +19,8 @@
 	font-weight: bold;
 	font-size: 18px;
 }
+
+.btn-outline-secondary {
+	/* font-weight: bold; */
+	color: rgb(104, 104, 104);
+}
