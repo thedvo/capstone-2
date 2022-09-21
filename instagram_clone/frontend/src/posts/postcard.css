@@ -3,14 +3,19 @@
 	width: fit-content;
 	margin-bottom: 100px;
 	background-color: #ffffff;
+	width: 500px;
 	max-width: 500px;
 	margin: auto;
 	border-radius: 10px;
+}
+.PostCard-ImageContainer {
+	border-top: 1px solid rgb(245, 245, 245);
 }
 
 .PostCard-Image {
 	width: 100%;
 	object-fit: contain;
+	border-bottom: 1px solid rgb(245, 245, 245);
 }
 
 .PostCard-Avatar {
@@ -26,12 +31,14 @@
 }
 
 .PostCard-Username {
-	margin-top: 5px;
+	margin-top: 8px;
 }
 
 .PostCard-Text {
 	padding: 15px;
 	text-align: left;
+	margin-bottom: -20px;
+	margin-top: -3px;
 }
 
 .PostCard-Caption {
@@ -42,7 +49,7 @@
 .PostCard-Date {
 	margin-bottom: -5px;
 	padding: 15px;
-	color: lightslategrey;
-	font-size: 12px;
+	color: rgb(142, 156, 170);
+	font-size: 11px;
 	/* font-weight: bold; */
 }

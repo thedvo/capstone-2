@@ -1,4 +1,4 @@
 .SimplePostCard-Image {
-	width: 35%;
+	max-width: 90%;
 	object-fit: contain;
 }

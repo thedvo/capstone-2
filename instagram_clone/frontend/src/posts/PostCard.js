@@ -52,11 +52,13 @@ const PostCard = ({
 
 			{/* clicking on the image section of the post will link to the individual post, showing more details (comments, comment form */}
 			<Link to={`/posts/${id}`} style={{ textDecoration: 'none' }}>
-				<img className="PostCard-Image" src={postImage} alt="post" />
-				<h5 className="PostCard-Text">
+				<div className="PostCard-ImageContainer">
+					<img className="PostCard-Image" src={postImage} alt="post" />
+				</div>
+				<h6 className="PostCard-Text">
 					<strong>{username}</strong>{' '}
 					<span className="PostCard-Caption">{caption}</span>
-				</h5>
+				</h6>
 			</Link>
 			<p className="PostCard-Date">{date}</p>
 		</div>
