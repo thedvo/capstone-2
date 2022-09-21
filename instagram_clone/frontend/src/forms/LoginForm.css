@@ -1,0 +1,13 @@
+.insta-logo {
+	height: 6vh;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.LoginForm-rerouteLink {
+	margin-top: 40px;
+	text-align: center;
+	font-size: 14px;
+	color: rgb(97, 96, 96);
+}

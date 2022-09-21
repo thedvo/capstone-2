@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './SignUpForm.css';
 
 const SignUpForm = ({ signup }) => {
 	const INITIAL_STATE = {
@@ -43,14 +45,23 @@ const SignUpForm = ({ signup }) => {
 	return (
 		<div className="SignupForm">
 			<div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4">
-				<h2 className="mb-3">Sign Up</h2>
 				<div className="card">
 					<div className="card-body">
+						<h2 className="mb-3">
+							<img
+								className="insta-logo"
+								src="https://logos-download.com/wp-content/uploads/2016/03/Instagram_Logo_2016.png"
+							></img>
+						</h2>
+
+						<h5 className="SignUpForm-lead">
+							Sign up to see moments from around the world.
+						</h5>
 						<form onSubmit={handleSubmit}>
 							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="username">
+								{/* <label className="form-label fw-bold" htmlFor="username">
 									Username
-								</label>
+								</label> */}
 								<input
 									id="username"
 									name="username"
@@ -59,13 +70,14 @@ const SignUpForm = ({ signup }) => {
 									value={formData.username}
 									autoComplete="off"
 									className="form-control"
+									placeholder="Username"
 									required
 								/>
 							</div>
 							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="password">
+								{/* <label className="form-label fw-bold" htmlFor="password">
 									Password
-								</label>
+								</label> */}
 								<input
 									id="password"
 									name="password"
@@ -74,13 +86,14 @@ const SignUpForm = ({ signup }) => {
 									value={formData.password}
 									autoComplete="off"
 									className="form-control"
+									placeholder="Password"
 									required
 								/>
 							</div>
 							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="firstName">
+								{/* <label className="form-label fw-bold" htmlFor="firstName">
 									First Name
-								</label>
+								</label> */}
 								<input
 									id="firstName"
 									name="firstName"
@@ -89,13 +102,14 @@ const SignUpForm = ({ signup }) => {
 									value={formData.firstName}
 									autoComplete="off"
 									className="form-control"
+									placeholder="First Name"
 									required
 								/>
 							</div>
 							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="lastName">
+								{/* <label className="form-label fw-bold" htmlFor="lastName">
 									Last Name
-								</label>
+								</label> */}
 								<input
 									id="lastName"
 									name="lastName"
@@ -104,13 +118,14 @@ const SignUpForm = ({ signup }) => {
 									value={formData.lastName}
 									autoComplete="off"
 									className="form-control"
+									placeholder="Last Name"
 									required
 								/>
 							</div>
 							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="email">
+								{/* <label className="form-label fw-bold" htmlFor="email">
 									Email
-								</label>
+								</label> */}
 								<input
 									id="email"
 									name="email"
@@ -119,10 +134,23 @@ const SignUpForm = ({ signup }) => {
 									value={formData.email}
 									autoComplete="off"
 									className="form-control"
+									placeholder="Email"
 									required
 								/>
 							</div>
-							<button className="btn btn-primary float-end">Submit</button>
+							<button className="btn btn-primary d-grid gap-2 col-6 mx-auto mt-4">
+								Sign Up
+							</button>
+
+							<div>
+								<p className="SignUpForm-rerouteLink">
+									Have an account?{' '}
+									<Link to={'/login'} style={{ textDecoration: 'none' }}>
+										{' '}
+										<strong>Login.</strong>
+									</Link>
+								</p>
+							</div>
 						</form>
 					</div>
 				</div>

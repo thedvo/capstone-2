@@ -3,8 +3,8 @@
 	width: fit-content;
 	margin-bottom: 100px;
 	background-color: #ffffff;
-	width: 650px;
-	max-width: 650px;
+	width: 625px;
+	max-width: 625px;
 	margin: auto;
 	border-radius: 10px;
 }
@@ -15,7 +15,7 @@
 .PostCard-Image {
 	width: 100%;
 	object-fit: contain;
-	border-bottom: 1px solid rgb(245, 245, 245);
+	border-bottom: 1px solid rgb(143, 82, 82);
 }
 
 .PostCard-Avatar {
@@ -50,6 +50,5 @@
 	margin-bottom: -5px;
 	padding: 15px;
 	color: rgb(142, 156, 170);
-	font-size: 11px;
-	/* font-weight: bold; */
+	font-size: 12px;
 }

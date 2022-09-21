@@ -69,7 +69,9 @@ const PostForm = () => {
 									required
 								/>
 							</div>
-							<button className="btn btn-primary float-end">Submit</button>
+							<button className="btn btn-primary d-grid gap-2 col-6 mx-auto mt-4">
+								Share
+							</button>
 						</form>
 					</div>
 				</div>

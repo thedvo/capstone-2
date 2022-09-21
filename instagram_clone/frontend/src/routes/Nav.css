@@ -3,8 +3,22 @@
 	border-bottom: 1px solid lightgrey;
 }
 
-.insta-logo {
+.nav-insta-logo {
 	height: 4vh;
 	margin-left: 100px;
 	margin-top: 4px;
+}
+
+.nav-homeBtn {
+	height: 4vh;
+}
+
+.nav-createBtn {
+	height: 4vh;
+	margin-right: -5px;
+}
+
+.nav-profileBtn {
+	height: 5vh;
+	margin-top: -5px;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './LoginForm.css';
 
 const LoginForm = ({ login }) => {
 	const INITIAL_STATE = {
@@ -40,14 +41,19 @@ const LoginForm = ({ login }) => {
 	return (
 		<div className="LoginForm">
 			<div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4">
-				<h2 className="mb-3">Log In</h2>
 				<div className="card">
 					<div className="card-body">
+						<h2 className="mb-3">
+							<img
+								className="insta-logo"
+								src="https://logos-download.com/wp-content/uploads/2016/03/Instagram_Logo_2016.png"
+							></img>
+						</h2>
 						<form onSubmit={handleSubmit} autoComplete="off">
 							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="name">
+								{/* <label className="form-label fw-bold" htmlFor="name">
 									Username
-								</label>
+								</label> */}
 								<input
 									id="username"
 									name="username"
@@ -55,13 +61,14 @@ const LoginForm = ({ login }) => {
 									onChange={handleChange}
 									value={formData.username}
 									className="form-control"
+									placeholder="Username"
 									required
 								/>
 							</div>
 							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="password">
+								{/* <label className="form-label fw-bold" htmlFor="password">
 									Password
-								</label>
+								</label> */}
 								<input
 									id="password"
 									name="password"
@@ -69,10 +76,22 @@ const LoginForm = ({ login }) => {
 									onChange={handleChange}
 									value={formData.password}
 									className="form-control"
+									placeholder="Password"
 									required
 								/>
 							</div>
-							<button className="btn btn-primary float-end">Submit</button>
+							<button className="btn btn-primary d-grid gap-2 col-6 mx-auto mt-4 ">
+								Log In
+							</button>
+							<div>
+								<p className="LoginForm-rerouteLink">
+									Don't have an account?{' '}
+									<Link to={'/signup'} style={{ textDecoration: 'none' }}>
+										{' '}
+										<strong>Sign up.</strong>
+									</Link>
+								</p>
+							</div>
 						</form>
 					</div>
 				</div>

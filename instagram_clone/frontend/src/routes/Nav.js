@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import UserContext from '../UserContext';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Avatar from '@material-ui/core/Avatar';
 import './Nav.css';
 
 function Nav({ logout }) {
@@ -15,22 +17,34 @@ function Nav({ logout }) {
 			<ul className="navbar-nav ms-auto">
 				<li className="nav-item me-4">
 					<NavLink className="nav-link" exact to="/posts/">
-						Explore
+						{/* Explore */}
+						<img
+							className="nav-homeBtn"
+							src="https://static.vecteezy.com/system/resources/previews/001/505/049/non_2x/homepage-icon-free-vector.jpg"
+						></img>
 					</NavLink>
 				</li>
 				{/* link to create a post */}
-				<li className="nav-item me-4">
+				<li className="nav-item me-3">
 					<NavLink className="nav-link" exact to="/posts/create">
-						Create (+)
+						{/* Create (+) */}
+						<img
+							className="nav-createBtn"
+							src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXip6m909KWrCWyylYpTYgSyrmwbjyRr1ElWD-6MT70UvGSsem-winJyC78LOAfhg1Mc8&usqp=CAU"
+						></img>
 					</NavLink>
 				</li>
-				<li className="nav-item me-4">
+				<li className="nav-item me-2">
 					<NavLink className="nav-link" exact to="/profile">
-						Profile
+						{/* Profile */}
+						<img
+							className="nav-profileBtn"
+							src="https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg"
+						></img>
 					</NavLink>
 				</li>
 				<li className="nav-item">
-					<Link className="nav-link" to="/" onClick={logout}>
+					<Link className="nav-link mt-2" to="/" onClick={logout}>
 						Logout {currentUser.firstName || currentUser.username}
 					</Link>
 				</li>
@@ -61,7 +75,7 @@ function Nav({ logout }) {
 			<div className="container-fluid">
 				<NavLink className="navbar-brand" exact to="/">
 					<img
-						className="insta-logo"
+						className="nav-insta-logo"
 						src="https://logos-download.com/wp-content/uploads/2016/03/Instagram_Logo_2016.png"
 						alt="instagram-logo"
 					></img>
