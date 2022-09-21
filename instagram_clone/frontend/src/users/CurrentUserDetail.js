@@ -172,11 +172,13 @@ const CurrentUserDetail = () => {
 					</div>
 
 					<div className="row">
-						<p className="UserDetail-Bio">{user.bio}</p>
+						<div className="col-9">
+							<p className="UserDetail-Bio">{user.bio}</p>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div className="row mt-4">
+			<div className="row mt-5">
 				<div className="UserDetail-Posts">
 					{/* map out individual post components */}
 					{user.posts.length ? (
