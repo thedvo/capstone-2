@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './postcard.css';
+import './SimplePostCard.css';
 
 /* 
 Card contains (user profile image, username, post image, caption)

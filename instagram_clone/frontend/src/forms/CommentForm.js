@@ -3,6 +3,8 @@ import UserContext from '../UserContext';
 import { useHistory } from 'react-router';
 import igCloneApi from '../Api';
 
+import './CommentForm.css';
+
 const CommentForm = ({ postId }) => {
 	const { currentUser } = useContext(UserContext);
 
@@ -30,7 +32,7 @@ const CommentForm = ({ postId }) => {
 	}
 
 	return (
-		<div className="PostForm">
+		<div className="CommentForm">
 			<div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4">
 				<div className="card">
 					<div className="card-body">

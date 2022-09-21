@@ -6,7 +6,7 @@ import igCloneApi from '../Api';
 import UserContext from '../UserContext';
 import CommentForm from '../forms/CommentForm';
 
-import './postdetail.css';
+import './PostDetail.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -47,16 +47,9 @@ const PostDetail = () => {
 	const [unliked, setUnliked] = useState();
 	const [isLoading, setIsLoading] = useState(true);
 
-	// useEffect(() => {
-	// 	function updateLikeStatus() {
-	// 		setLiked(hasLikedPost(id) === true);
-	// 		setUnliked(hasLikedPost(id) === false);
-	// 	}
-	// 	updateLikeStatus();
-	// }, [id, hasLikedPost]);
+	// console.log(liked);
+	// console.log(unliked);
 
-	console.log(liked);
-	console.log(unliked);
 	// when route renders, make a request to get the post.
 	useEffect(() => {
 		async function getPost() {
@@ -82,15 +75,25 @@ const PostDetail = () => {
 	/** Show like or unlike button depending on the "liked" state. */
 	function likeButton() {
 		return (
-			<div>
-				<button onClick={handleLike}>Like</button>
+			<div className="PostDetail-Likes">
+				<button className="PostDetail-LikeBtn" onClick={handleLike}>
+					Like
+				</button>
+				<span>
+					<h5 className="PostDetail-LikeCount">{post.likes.length} Likes</h5>
+				</span>
 			</div>
 		);
 	}
 	function unLikeButton() {
 		return (
-			<div>
-				<button onClick={handleUnlike}>Unlike</button>
+			<div className="PostDetail-Likes">
+				<button className="PostDetail-LikeBtn" onClick={handleUnlike}>
+					Unlike
+				</button>
+				<span>
+					<h5 className="PostDetail-LikeCount">{post.likes.length} Likes</h5>
+				</span>
 			</div>
 		);
 	}
@@ -139,36 +142,42 @@ const PostDetail = () => {
 
 	function linkToProfile(comment) {
 		return (
-			<Link to={`/profile`}>
-				<span>{comment.username}</span>
+			<Link to={`/profile`} style={{ textDecoration: 'none' }}>
+				<strong className="comment-user">{comment.username}</strong>
 			</Link>
 		);
 	}
 
 	function linkToUser(comment) {
 		return (
-			<Link to={`/users/${comment.username}`}>
-				<span>{comment.username}</span>
+			<Link
+				to={`/users/${comment.username}`}
+				style={{ textDecoration: 'none' }}
+			>
+				<strong className="comment-user">{comment.username}</strong>
 			</Link>
 		);
 	}
 
 	return (
-		<div className="PostCard">
+		<div className="PostDetail">
 			{/* Post Header (avatar + username) */}
-			<div className="PostCard-Header">
-				<Link to={`/users/${post.user[0].username}`}>
-					<Avatar
-						className="PostCard-Avatar"
-						alt={post.user[0].username}
-						src={post.profileImage}
-					/>
-					<h3>{post.user[0].username}</h3>
+			<div className="PostDetail-Header">
+				<Avatar
+					className="PostDetail-Avatar"
+					alt={post.user[0].username}
+					src={post.profileImage}
+				/>
+				<Link
+					to={`/users/${post.user[0].username}`}
+					style={{ textDecoration: 'none' }}
+				>
+					<h4 className="PostDetail-Username">{post.user[0].username}</h4>
 				</Link>
 			</div>
 
 			{/* Post Body (Image, Likes, Comments, Comment Form, Date */}
-			<img className="PostCard-Image" src={post.imageFile} alt="post" />
+			<img className="PostDetail-Image" src={post.imageFile} alt="post" />
 
 			{!liked ? likeButton() : unLikeButton()}
 
@@ -176,28 +185,30 @@ const PostDetail = () => {
 				{/* <h4>
 					<Link to={`/posts/${id}/likes`}>{post.likes.length} Likes </Link>
 				</h4> */}
-				<h4>{post.likes.length} Likes</h4>
 
-				<h4 className="PostCard-Text">
-					<Link to={`/users/${post.user[0].username}`}>
-						{post.user[0].username}
+				<h4 className="PostDetail-Caption">
+					<Link
+						to={`/users/${post.user[0].username}`}
+						style={{ textDecoration: 'none' }}
+						className="PostDetail-caption-username"
+					>
+						<strong>{post.user[0].username}</strong>
 					</Link>
-					<p className="PostCard-Caption">{post.caption}</p>
+					<span className="PostCard-Caption">{post.caption}</span>
 				</h4>
 
 				{/* map the comments*/}
 				{post.comments.map((comment) => (
-					<div key={comment.id}>
+					<h5 key={comment.id} className="PostDetail-Comments">
 						{comment.username === currentUser.username
 							? linkToProfile(comment)
 							: linkToUser(comment)}
-						<p>{comment.comment}</p>
-					</div>
+						<span>{comment.comment}</span>
+					</h5>
 				))}
-				<CommentForm postId={id} />
 			</div>
-
-			<p>Posted {date}</p>
+			<CommentForm postId={id} />
+			<p className="PostDetail-Date">{date}</p>
 
 			{currentUser.username === post.user[0].username
 				? postByCurrentUser()

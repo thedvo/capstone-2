@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import UserContext from '../UserContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './Nav.css';
 
 function Nav({ logout }) {
 	const { currentUser } = useContext(UserContext);
@@ -59,7 +60,10 @@ function Nav({ logout }) {
 		<nav className="Navigation navbar navbar-expand-lg mb-4">
 			<div className="container-fluid">
 				<NavLink className="navbar-brand" exact to="/">
-					Instagram
+					<img
+						className="insta-logo"
+						src="https://logos-download.com/wp-content/uploads/2016/03/Instagram_Logo_2016.png"
+					></img>
 				</NavLink>
 				{currentUser ? loggedInNav() : loggedOutNav()}
 			</div>

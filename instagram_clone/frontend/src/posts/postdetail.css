@@ -1,0 +1,72 @@
+.PostDetail {
+	border: 1px solid lightgray;
+	width: fit-content;
+	margin-bottom: 40px;
+	background-color: #ffffff;
+	max-width: 500px;
+	margin: auto;
+	border-radius: 10px;
+}
+
+/* .PostDetail-Header {
+	display: flex;
+	align-items: center;
+	text-align: left;
+	padding: 10px;
+	border-bottom: 1px solid lightgray;
+} */
+
+.PostDetail-Header {
+	display: flex;
+	align-items: center;
+	padding: 12px 15px;
+}
+
+.PostDetail-Avatar {
+	margin-right: 10px;
+}
+
+.PostDetail-Username {
+	margin-top: 5px;
+}
+
+.PostDetail-Image {
+	width: 100%;
+	object-fit: contain;
+}
+
+.PostDetail-Caption {
+	padding: 15px;
+}
+
+.PostDetail-Likes {
+	padding: 15px;
+	display: flex;
+}
+
+.PostDetail-LikeBtn {
+	display: flex;
+	margin-right: 12px;
+}
+.PostDetail-LikeCount {
+	margin-top: 5px;
+}
+
+.comment-user {
+	margin-right: 5px;
+	padding: 10px;
+}
+
+.PostDetail-caption-username {
+	margin-right: 5px;
+}
+
+.PostDetail-Comments {
+	margin: 5px;
+}
+
+.PostDetail-Date {
+	padding: 15px;
+	color: lightslategrey;
+	font-size: 15px;
+}
