@@ -116,14 +116,17 @@ const CurrentUserDetail = () => {
 
 	return (
 		<div className="UserDetail container col-md-8 offset-md-2 mt-4">
-			<div className="row">
+			<div className="UserDetail-Top row">
 				{/* <div className="UserDetail-Header"> */}
 				<div className="col-3">
 					<div>
 						<img
 							className="UserDetail-Avatar"
 							alt={user.username}
-							src={user.profileImage}
+							src={
+								user.profileImage ||
+								'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'
+							}
 						/>
 					</div>
 				</div>
@@ -153,7 +156,7 @@ const CurrentUserDetail = () => {
 							</div>
 						</div>
 					</div>
-					<div className="row mt-4">
+					<div className="UserDetail-Data row mt-4">
 						<div className="col-2">
 							{user.likes.length > 0 ? hasLikes() : noLikes()}
 						</div>
@@ -179,13 +182,17 @@ const CurrentUserDetail = () => {
 				</div>
 			</div>
 			<div className="row mt-5">
-				<div className="UserDetail-Posts">
+				<div className="UserDetail-Posts ">
 					{/* map out individual post components */}
 					{user.posts.length ? (
 						<div className="UserDetail-Posts row">
 							{user.posts.map((p) => (
 								<div className="col-4 mt-3">
-									<SimplePostCard id={p.id} imageFile={p.imageFile} />
+									<SimplePostCard
+										key={p.id}
+										id={p.id}
+										imageFile={p.imageFile}
+									/>
 								</div>
 							))}
 						</div>
@@ -197,5 +204,5 @@ const CurrentUserDetail = () => {
 		</div>
 	);
 };
-
+// col-lg-8 offset-md-2
 export default CurrentUserDetail;

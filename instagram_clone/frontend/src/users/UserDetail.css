@@ -17,6 +17,15 @@
 	margin-top: -8px;
 }
 
+.UserDetail-Username {
+	margin-left: 25px;
+}
+
+.UserDetail-FollowBtn {
+	width: 150px;
+	margin-left: 20px;
+}
+
 .UserDetail-Title {
 	color: black;
 	font-size: 17px;

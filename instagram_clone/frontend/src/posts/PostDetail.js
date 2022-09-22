@@ -46,6 +46,8 @@ const PostDetail = () => {
 	const [liked, setLiked] = useState();
 	const [unliked, setUnliked] = useState();
 	const [isLoading, setIsLoading] = useState(true);
+	const [profileImage, setProfileImage] = useState();
+	const [username, setUsername] = useState();
 
 	// console.log(liked);
 	// console.log(unliked);
@@ -60,6 +62,8 @@ const PostDetail = () => {
 			setIsLoading(false);
 			setLiked(hasLikedPost(id) === true);
 			setUnliked(hasLikedPost(id) === false);
+			setProfileImage(post.user[0].profileImage);
+			setUsername(post.user[0].username);
 		}
 		getPost();
 	}, [id, liked, unliked]);
@@ -140,7 +144,29 @@ const PostDetail = () => {
 
 	let date = formatDate(post.datePosted);
 
-	function linkToProfile(comment) {
+	function linkToProfile(post) {
+		return (
+			<div className="PostCard-Header">
+				<Avatar className="PostCard-Avatar" alt={username} src={profileImage} />
+				<Link to={`/profile`} style={{ textDecoration: 'none' }}>
+					<h5 className="PostCard-Username">{username}</h5>
+				</Link>
+			</div>
+		);
+	}
+
+	function linkToUser(post) {
+		return (
+			<div className="PostCard-Header">
+				<Avatar className="PostCard-Avatar" alt={username} src={profileImage} />
+				<Link to={`/users/${username}`} style={{ textDecoration: 'none' }}>
+					<h5 className="PostCard-Username">{username}</h5>
+				</Link>
+			</div>
+		);
+	}
+
+	function linkToProfileFromComment(comment) {
 		return (
 			<Link to={`/profile`} style={{ textDecoration: 'none' }}>
 				<strong className="comment-user">{comment.username}</strong>
@@ -148,7 +174,7 @@ const PostDetail = () => {
 		);
 	}
 
-	function linkToUser(comment) {
+	function linkToUserFromComment(comment) {
 		return (
 			<Link
 				to={`/users/${comment.username}`}
@@ -163,17 +189,9 @@ const PostDetail = () => {
 		<div className="PostDetail">
 			{/* Post Header (avatar + username) */}
 			<div className="PostDetail-Header">
-				<Avatar
-					className="PostDetail-Avatar"
-					alt={post.user[0].username}
-					src={post.user[0].profileImage}
-				/>
-				<Link
-					to={`/users/${post.user[0].username}`}
-					style={{ textDecoration: 'none' }}
-				>
-					<h4 className="PostDetail-Username">{post.user[0].username}</h4>
-				</Link>
+				{post.user[0].username === currentUser.username
+					? linkToProfile()
+					: linkToUser()}
 			</div>
 
 			{/* Post Body (Image, Likes, Comments, Comment Form, Date */}
@@ -201,8 +219,8 @@ const PostDetail = () => {
 				{post.comments.map((comment) => (
 					<h5 key={comment.id} className="PostDetail-Comments">
 						{comment.username === currentUser.username
-							? linkToProfile(comment)
-							: linkToUser(comment)}
+							? linkToProfileFromComment(comment)
+							: linkToUserFromComment(comment)}
 						<span>{comment.comment}</span>
 					</h5>
 				))}

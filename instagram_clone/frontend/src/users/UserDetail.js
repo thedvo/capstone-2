@@ -7,6 +7,7 @@ import SimplePostCard from '../posts/SimplePostCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Avatar from '@material-ui/core/Avatar';
+import './UserDetail.css';
 
 const UserDetail = () => {
 	const { followUser, unfollowUser, hasFollowedUser } = useContext(UserContext);
@@ -57,52 +58,74 @@ const UserDetail = () => {
 
 	function noLikes() {
 		return (
-			<div>
-				<h4>Likes</h4>
-				<p>0</p>
+			<div className="UserDetail-Likes">
+				<p>
+					<span className="UserDetail-Number">0</span> likes
+				</p>
 			</div>
 		);
 	}
+
 	function noFollowers() {
 		return (
-			<div>
-				<h4>Followers</h4>
-				<p>0</p>
+			<div className="UserDetail-followers">
+				<p>
+					<span className="UserDetail-Number">0</span> followers
+				</p>
 			</div>
 		);
 	}
 	function noFollowing() {
 		return (
-			<div>
-				<h4>Following</h4>
-				<p>0</p>
+			<div className="UserDetail-following">
+				<p>
+					<span className="UserDetail-Number">0</span> following
+				</p>
 			</div>
 		);
 	}
 
 	function hasLikes() {
 		return (
-			<div>
-				<Link to={`/users/${username}/likes`}>
-					<h4>Likes {user.likes.length}</h4>
+			<div className="UserDetail-likes">
+				<Link
+					to={`/users/${username}/likes`}
+					style={{ textDecoration: 'none' }}
+				>
+					<p className="UserDetail-Title">
+						{' '}
+						<span className="UserDetail-Number">{user.likes.length}</span> likes
+					</p>
 				</Link>
 			</div>
 		);
 	}
 	function hasFollowers() {
 		return (
-			<div>
-				<Link to={`/users/${username}/followers`}>
-					<h4>Followers {user.followers.length}</h4>
+			<div className="UserDetail-followers">
+				<Link
+					to={`/users/${username}/followers`}
+					style={{ textDecoration: 'none' }}
+				>
+					<p className="UserDetail-Title">
+						<span className="UserDetail-Number">{user.followers.length} </span>
+						followers
+					</p>
 				</Link>
 			</div>
 		);
 	}
 	function hasFollowing() {
 		return (
-			<div>
-				<Link to={`/users/${username}/following`}>
-					<h4>Following {user.following.length}</h4>
+			<div className="UserDetail-following">
+				<Link
+					to={`/users/${username}/following`}
+					style={{ textDecoration: 'none' }}
+				>
+					<p className="UserDetail-Title">
+						<span className="UserDetail-Number">{user.following.length}</span>{' '}
+						following
+					</p>
 				</Link>
 			</div>
 		);
@@ -111,49 +134,97 @@ const UserDetail = () => {
 	function followButton() {
 		return (
 			<div>
-				<button onClick={handleFollow}>Follow</button>
+				<button
+					className="UserDetail-FollowBtn btn btn-outline-primary"
+					onClick={handleFollow}
+				>
+					Follow
+				</button>
 			</div>
 		);
 	}
 	function unfollowButton() {
 		return (
 			<div>
-				<button onClick={handleUnfollow}>Unfollow</button>
+				<button
+					className="UserDetail-FollowBtn btn btn-outline-danger"
+					onClick={handleUnfollow}
+				>
+					Unfollow
+				</button>
 			</div>
 		);
 	}
 
 	return (
-		<div className="UserDetail col-md-8 offset-md-2 mt-4">
-			<div>
-				<Avatar
-					className="PostCard-Avatar"
-					alt={user.username}
-					src={user.profileImage}
-				/>
-				<h4>{user.username}</h4>
-			</div>
-
-			{!followed ? followButton() : unfollowButton()}
-
-			<h4>
-				{user.firstName} {user.lastName}
-			</h4>
-			<p>{user.bio}</p>
-			{user.likes.length > 0 ? hasLikes() : noLikes()}
-			{user.following.length > 0 ? hasFollowing() : noFollowing()}
-			{user.followers.length > 0 ? hasFollowers() : noFollowers()}
-			<div className="UserDetail-Posts col-md-8 offset-md-2">
-				{/* map out individual post components */}
-				{user.posts.length ? (
-					<div className="CompanyList-list">
-						{user.posts.map((p) => (
-							<SimplePostCard key={p.id} id={p.id} imageFile={p.imageFile} />
-						))}
+		<div className="UserDetail container col-md-8 offset-md-2 mt-4">
+			<div className="UserDetail-Top row">
+				<div className="col-3">
+					<img
+						className="UserDetail-Avatar"
+						alt={user.username}
+						src={
+							user.profileImage ||
+							'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'
+						}
+					/>
+				</div>
+				<div className="col-9">
+					<div className="row">
+						<div className="col-2">
+							<div className="UserDetail-Username">
+								<h3>{user.username}</h3>
+							</div>
+						</div>
+						<div className="UserDetail-Details col-2">
+							<div className="UserDetail-FollowBtn">
+								{!followed ? followButton() : unfollowButton()}
+							</div>
+						</div>
 					</div>
-				) : (
-					<p className="lead">User currently has no posts.</p>
-				)}
+					<div className="row mt-4">
+						<div className="col-2">
+							{user.likes.length > 0 ? hasLikes() : noLikes()}
+						</div>
+						<div className="col-2">
+							{user.following.length > 0 ? hasFollowing() : noFollowing()}
+						</div>
+						<div className="col-2">
+							{user.followers.length > 0 ? hasFollowers() : noFollowers()}
+						</div>
+					</div>
+
+					<div className="row mt-2">
+						<h5 className="UserDetail-FullName">
+							{user.firstName} {user.lastName}
+						</h5>
+					</div>
+					<div className="row">
+						<div className="col-9">
+							<p className="UserDetail-Bio">{user.bio}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className="row mt-5">
+				<div className="UserDetail-Posts">
+					{/* map out individual post components */}
+					{user.posts.length ? (
+						<div className="UserDetail-Posts row">
+							{user.posts.map((p) => (
+								<div className="col-4 mt-3">
+									<SimplePostCard
+										key={p.id}
+										id={p.id}
+										imageFile={p.imageFile}
+									/>
+								</div>
+							))}
+						</div>
+					) : (
+						<p className="lead">User currently has no posts.</p>
+					)}
+				</div>
 			</div>
 		</div>
 	);
