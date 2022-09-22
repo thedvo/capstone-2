@@ -5,7 +5,7 @@ import igCloneApi from '../Api';
 
 import './CommentForm.css';
 
-const CommentForm = ({ postId }) => {
+const CommentForm = ({ comments, setComments, postId }) => {
 	const { currentUser } = useContext(UserContext);
 
 	const INITIAL_STATE = {
@@ -23,12 +23,16 @@ const CommentForm = ({ postId }) => {
 	};
 
 	async function handleSubmit(e) {
-		// e.preventDefault();
-		await igCloneApi.addComment(postId, currentUser.username, formData);
+		e.preventDefault();
+		let newComment = await igCloneApi.addComment(
+			postId,
+			currentUser.username,
+			formData
+		);
 
-		history.push(`/posts/${postId}`);
+		setComments([...comments, newComment]);
 		setFormData(INITIAL_STATE);
-		console.log('SUCCESS! Added a comment.');
+		// console.log('SUCCESS! Added a comment.');
 	}
 
 	return (

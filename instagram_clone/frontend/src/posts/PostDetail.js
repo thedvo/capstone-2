@@ -48,9 +48,7 @@ const PostDetail = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [profileImage, setProfileImage] = useState();
 	const [username, setUsername] = useState();
-
-	// console.log(liked);
-	// console.log(unliked);
+	const [comments, setComments] = useState();
 
 	// when route renders, make a request to get the post.
 	useEffect(() => {
@@ -64,9 +62,10 @@ const PostDetail = () => {
 			setUnliked(hasLikedPost(id) === false);
 			setProfileImage(post.user[0].profileImage);
 			setUsername(post.user[0].username);
+			setComments(post.comments);
 		}
 		getPost();
-	}, [id, liked, unliked]);
+	}, [id, liked, unliked, comments]);
 
 	if (isLoading) {
 		return (
@@ -272,7 +271,11 @@ const PostDetail = () => {
 				))}
 			</div>
 			<div>
-				<CommentForm postId={id} />
+				<CommentForm
+					comments={comments}
+					setComments={setComments}
+					postId={id}
+				/>
 			</div>
 			<p className="PostDetail-Date">{date}</p>
 		</div>
