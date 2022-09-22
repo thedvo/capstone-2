@@ -8,7 +8,7 @@ import Home from '../Home';
 import CurrentUserDetail from '../users/CurrentUserDetail';
 import UserDetail from '../users/UserDetail';
 import FollowingList from '../users/FollowingList';
-import FollowerList from '../users/FollwerList';
+import FollowerList from '../users/FollowerList';
 import LikesList from '../users/LikesList';
 
 import PostList from '../posts/PostList';

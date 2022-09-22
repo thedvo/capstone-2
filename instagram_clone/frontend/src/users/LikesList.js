@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import UserContext from '../UserContext';
 
 import igCloneApi from '../Api';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
 import SimplePostCard from '../posts/SimplePostCard';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './LikesList.css';
+
 const LikesList = () => {
+	const { currentUser } = useContext(UserContext);
 	const { username } = useParams();
 	const [likes, setLikes] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -31,22 +34,38 @@ const LikesList = () => {
 		);
 	}
 
+	function linkToProfile(username) {
+		return (
+			<Link to={`/profile`} style={{ textDecoration: 'none' }}>
+				<button className="btn btn-outline-dark mb-4">Back to Profile</button>
+			</Link>
+		);
+	}
+
+	function linkToUser(username) {
+		return (
+			<Link to={`/users/${username}`} style={{ textDecoration: 'none' }}>
+				<button className="btn btn-outline-dark mb-4">Back to Profile</button>
+			</Link>
+		);
+	}
+
 	return (
 		<div className="LikesList col-md-8 offset-md-2">
-			<div>
-				<Link to={`/users/${username}`}>
-					<button className="btn btn-light mb-4">Back to Profile</button>
-				</Link>
-			</div>
+			{username === currentUser.username
+				? linkToProfile(username)
+				: linkToUser(username)}
 			{/* map out individual user components */}
 			{likes.length ? (
-				<div className="LikesList-list">
+				<div className="LikesList-list row">
 					{likes.map((p) => (
-						<SimplePostCard
-							key={p.postId}
-							id={p.postId}
-							imageFile={p.imageFile}
-						/>
+						<div className="col-4 mt-3">
+							<SimplePostCard
+								key={p.postId}
+								id={p.postId}
+								imageFile={p.imageFile}
+							/>
+						</div>
 					))}
 				</div>
 			) : (

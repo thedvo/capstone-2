@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import UserContext from '../UserContext';
 
 import igCloneApi from '../Api';
 import UserCard from './UserCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './FollowingList.css';
 
 const FollowingList = () => {
+	const { currentUser } = useContext(UserContext);
 	const { username } = useParams();
 	const [following, setFollowing] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -31,14 +34,30 @@ const FollowingList = () => {
 		);
 	}
 
+	function linkToProfile(username) {
+		return (
+			<Link to={`/profile`} style={{ textDecoration: 'none' }}>
+				<button className="btn btn-outline-dark mb-4">Back to Profile</button>
+			</Link>
+		);
+	}
+
+	function linkToUser(username) {
+		return (
+			<Link to={`/users/${username}`} style={{ textDecoration: 'none' }}>
+				<button className="btn btn-outline-dark mb-4">Back to Profile</button>
+			</Link>
+		);
+	}
+
 	return (
 		<div className="FollowingList col-md-8 offset-md-2">
-			<div>
-				<Link to={`/users/${username}`}>
-					<button className="btn btn-light mb-4">Back to Profile</button>
-				</Link>
-			</div>
+			{username === currentUser.username
+				? linkToProfile(username)
+				: linkToUser(username)}
 			{/* map out individual user components */}
+			<h3 className="FollowingList-Title">Following</h3>
+
 			{following.length ? (
 				<div className="FollowingList-list">
 					{following.map((u) => (
