@@ -3,7 +3,6 @@ import { NavLink, Link } from 'react-router-dom';
 import UserContext from '../UserContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Avatar from '@material-ui/core/Avatar';
 import './Nav.css';
 
 function Nav({ logout }) {
@@ -21,6 +20,7 @@ function Nav({ logout }) {
 						<img
 							className="nav-homeBtn"
 							src="https://static.vecteezy.com/system/resources/previews/001/505/049/non_2x/homepage-icon-free-vector.jpg"
+							alt="home-button"
 						></img>
 					</NavLink>
 				</li>
@@ -31,6 +31,7 @@ function Nav({ logout }) {
 						<img
 							className="nav-createBtn"
 							src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXip6m909KWrCWyylYpTYgSyrmwbjyRr1ElWD-6MT70UvGSsem-winJyC78LOAfhg1Mc8&usqp=CAU"
+							alt="create-button"
 						></img>
 					</NavLink>
 				</li>
@@ -40,6 +41,7 @@ function Nav({ logout }) {
 						<img
 							className="nav-profileBtn"
 							src="https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg"
+							alt="profile-button"
 						></img>
 					</NavLink>
 				</li>

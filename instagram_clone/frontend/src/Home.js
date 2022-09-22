@@ -22,6 +22,7 @@ const Home = () => {
 								<img
 									className="Home-VerifiedLogo"
 									src="https://www.pngitem.com/pimgs/m/302-3024199_instagram-verified-symbol-png-instagram-verified-logo-png.png"
+									alt="verified-logo"
 								></img>
 							</span>
 						</h3>

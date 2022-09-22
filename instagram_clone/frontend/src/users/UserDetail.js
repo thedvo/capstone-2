@@ -6,7 +6,6 @@ import UserContext from '../UserContext';
 import SimplePostCard from '../posts/SimplePostCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Avatar from '@material-ui/core/Avatar';
 import './UserDetail.css';
 
 const UserDetail = () => {

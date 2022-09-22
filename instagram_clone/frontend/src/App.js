@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 
 import './App.css';
 
 import igCloneApi from './Api';
 import Nav from './routes/Nav';
 import Routes from './routes/Routes';
-import jwt from 'jsonwebtoken';
+import Footer from './Footer';
+
 import UserContext from './UserContext';
 import useLocalStorage from './hooks/useLocalStorage';
 
@@ -192,6 +194,7 @@ function App() {
 					<div>
 						<Nav logout={logout} />
 						<Routes login={login} signup={signup} />
+						<Footer />
 					</div>
 				</UserContext.Provider>
 			</BrowserRouter>

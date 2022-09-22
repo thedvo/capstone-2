@@ -47,6 +47,7 @@ const LoginForm = ({ login }) => {
 							<img
 								className="insta-logo"
 								src="https://logos-download.com/wp-content/uploads/2016/03/Instagram_Logo_2016.png"
+								alt="instagram-logo"
 							></img>
 						</h2>
 						<form onSubmit={handleSubmit} autoComplete="off">
@@ -66,7 +67,7 @@ const LoginForm = ({ login }) => {
 								<input
 									id="password"
 									name="password"
-									type="text"
+									type="password"
 									onChange={handleChange}
 									value={formData.password}
 									className="form-control"

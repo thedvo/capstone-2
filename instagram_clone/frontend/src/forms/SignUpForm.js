@@ -51,6 +51,7 @@ const SignUpForm = ({ signup }) => {
 							<img
 								className="insta-logo"
 								src="https://logos-download.com/wp-content/uploads/2016/03/Instagram_Logo_2016.png"
+								alt="instagram-logo"
 							></img>
 						</h2>
 
