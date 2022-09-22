@@ -6,9 +6,6 @@ import igCloneApi from '../Api';
 import SimplePostCard from '../posts/SimplePostCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import Avatar from '@material-ui/core/Avatar';
-// import Avatar from '@mui/material/Avatar';
-
 import './CurrentUserDetail.css';
 
 const CurrentUserDetail = () => {
@@ -117,7 +114,6 @@ const CurrentUserDetail = () => {
 	return (
 		<div className="UserDetail container col-md-8 offset-md-2 mt-4">
 			<div className="UserDetail-Top row">
-				{/* <div className="UserDetail-Header"> */}
 				<div className="col-3">
 					<div>
 						<img

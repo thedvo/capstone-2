@@ -6,7 +6,6 @@ import igCloneApi from '../Api';
 import SimplePostCard from '../posts/SimplePostCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './LikesList.css';
 
 const LikesList = () => {
 	const { currentUser } = useContext(UserContext);

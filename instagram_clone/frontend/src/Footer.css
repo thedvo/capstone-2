@@ -1,24 +1,10 @@
-a {
-	text-decoration: none;
-	font-weight: bold;
-}
-
-/* .Footer {
-	margin-right: 50%;
-	margin-left: 40%;
-	width: 400px;
-	text-align: center;
-	bottom: 0%;
-	position: fixed;
-} */
-
 .Footer {
 	margin-top: 1rem;
 	padding: 1rem;
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	width: 100%;
+	width: 17%;
 }
 
 .Footer-Name {
@@ -34,4 +20,9 @@ a {
 .Footer-Note {
 	font-size: 9px;
 	font-style: italic;
+}
+
+a {
+	text-decoration: none;
+	font-weight: bold;
 }

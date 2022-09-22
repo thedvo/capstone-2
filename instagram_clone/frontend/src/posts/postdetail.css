@@ -8,14 +8,6 @@
 	border-radius: 10px;
 }
 
-/* .PostDetail-Header {
-	display: flex;
-	align-items: center;
-	text-align: left;
-	padding: 10px;
-	border-bottom: 1px solid lightgray;
-} */
-
 .PostDetail-Header {
 	display: flex;
 	align-items: center;
