@@ -29,17 +29,6 @@ function authenticateJWT(req, res, next) {
 	}
 }
 
-// function authenticateJWT(req, res, next) {
-// 	try {
-// 		const tokenFromBody = req.headers.token;
-// 		const payload = jwt.verify(tokenFromBody, SECRET_KEY);
-// 		req.user = payload;
-// 		return next();
-// 	} catch (err) {
-// 		return next();
-// 	}
-// }
-
 /** Middleware to use when they must be logged in.
  *
  * If not, raises Unauthorized.
