@@ -343,7 +343,7 @@ class User {
 		const likeResult = await db.query(
 			`
 				 SELECT p.id AS "postId",
-                        p.image_file
+                        p.image_file AS "imageFile"
                  FROM posts AS p
                  LEFT JOIN likes AS l 
 				 ON p.id = l.post_id
@@ -532,7 +532,10 @@ class User {
 			`
 		SELECT 
 			u.id AS "userId",
-			u.username
+			u.username,
+			u.first_name AS "firstName",
+			u.last_name AS "lastName",
+			u.profile_image AS "profileImage"
 		FROM users AS u
 		LEFT JOIN follows AS f
 		ON u.id = f.user_followed_id
@@ -564,7 +567,10 @@ class User {
 			`
 		SELECT 
 			u.id AS "userId",
-			u.username
+			u.username,
+			u.first_name AS "firstName",
+			u.last_name AS "lastName",
+			u.profile_image AS "profileImage"
 		FROM users AS u
 		LEFT JOIN follows AS f
 		ON u.id = f.user_following_id
