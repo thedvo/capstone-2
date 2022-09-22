@@ -45,9 +45,10 @@
 }
 
 .PostDetail-LikeBtn {
-	display: flex;
 	margin-right: 12px;
 	font-size: 12px;
+	height: 30px;
+	margin-top: 2px;
 }
 
 .PostDetail-LikeCount {
@@ -55,7 +56,7 @@
 }
 
 .PostDetail-Caption {
-	margin-top: -12px;
+	margin-top: -16px;
 }
 
 .comment-user {

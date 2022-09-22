@@ -237,10 +237,6 @@ const PostDetail = () => {
 			{!liked ? likeButton() : unLikeButton()}
 
 			<div>
-				{/* <h4>
-					<Link to={`/posts/${id}/likes`}>{post.likes.length} Likes </Link>
-				</h4> */}
-
 				{post.user[0].username === currentUser.username ? (
 					<h6 className="PostDetail-Caption">
 						<Link
