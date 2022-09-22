@@ -51,9 +51,6 @@ const LoginForm = ({ login }) => {
 						</h2>
 						<form onSubmit={handleSubmit} autoComplete="off">
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="name">
-									Username
-								</label> */}
 								<input
 									id="username"
 									name="username"
@@ -66,9 +63,6 @@ const LoginForm = ({ login }) => {
 								/>
 							</div>
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="password">
-									Password
-								</label> */}
 								<input
 									id="password"
 									name="password"

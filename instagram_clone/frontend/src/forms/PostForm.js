@@ -40,9 +40,6 @@ const PostForm = () => {
 					<div className="card-body">
 						<form onSubmit={handleSubmit}>
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="image_file">
-									Image File (URL)
-								</label> */}
 								<input
 									id="image_file"
 									name="image_file"
@@ -56,9 +53,6 @@ const PostForm = () => {
 								/>
 							</div>
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="caption">
-									Caption
-								</label> */}
 								<textarea
 									id="caption"
 									name="caption"

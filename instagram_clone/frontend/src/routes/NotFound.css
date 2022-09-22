@@ -1,0 +1,18 @@
+.NotFound {
+	margin: 0;
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
+
+.NotFound-Message {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.NotFound-reroute {
+	font-size: 15px;
+	text-align: center;
+}

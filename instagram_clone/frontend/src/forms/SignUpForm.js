@@ -59,9 +59,6 @@ const SignUpForm = ({ signup }) => {
 						</h5>
 						<form onSubmit={handleSubmit}>
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="username">
-									Username
-								</label> */}
 								<input
 									id="username"
 									name="username"
@@ -75,9 +72,6 @@ const SignUpForm = ({ signup }) => {
 								/>
 							</div>
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="password">
-									Password
-								</label> */}
 								<input
 									id="password"
 									name="password"
@@ -91,9 +85,6 @@ const SignUpForm = ({ signup }) => {
 								/>
 							</div>
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="firstName">
-									First Name
-								</label> */}
 								<input
 									id="firstName"
 									name="firstName"
@@ -107,9 +98,6 @@ const SignUpForm = ({ signup }) => {
 								/>
 							</div>
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="lastName">
-									Last Name
-								</label> */}
 								<input
 									id="lastName"
 									name="lastName"
@@ -123,9 +111,6 @@ const SignUpForm = ({ signup }) => {
 								/>
 							</div>
 							<div className="mb-3">
-								{/* <label className="form-label fw-bold" htmlFor="email">
-									Email
-								</label> */}
 								<input
 									id="email"
 									name="email"
