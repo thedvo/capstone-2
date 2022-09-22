@@ -80,24 +80,42 @@ const PostDetail = () => {
 	function likeButton() {
 		return (
 			<div className="PostDetail-Likes">
-				<button className="PostDetail-LikeBtn" onClick={handleLike}>
+				<button
+					className="PostDetail-LikeBtn btn btn-sm btn-primary"
+					onClick={handleLike}
+				>
 					Like
 				</button>
-				<span>
-					<h5 className="PostDetail-LikeCount">{post.likes.length} Likes</h5>
-				</span>
+				{post.likes.length === 1 ? (
+					<span>
+						<h5 className="PostDetail-LikeCount">{post.likes.length} Like</h5>
+					</span>
+				) : (
+					<span>
+						<h5 className="PostDetail-LikeCount">{post.likes.length} Likes</h5>
+					</span>
+				)}
 			</div>
 		);
 	}
 	function unLikeButton() {
 		return (
 			<div className="PostDetail-Likes">
-				<button className="PostDetail-LikeBtn" onClick={handleUnlike}>
+				<button
+					className="PostDetail-LikeBtn btn btn-sm btn-outline-danger"
+					onClick={handleUnlike}
+				>
 					Unlike
 				</button>
-				<span>
-					<h5 className="PostDetail-LikeCount">{post.likes.length} Likes</h5>
-				</span>
+				{post.likes.length === 1 ? (
+					<span>
+						<h5 className="PostDetail-LikeCount">{post.likes.length} Like</h5>
+					</span>
+				) : (
+					<span>
+						<h5 className="PostDetail-LikeCount">{post.likes.length} Likes</h5>
+					</span>
+				)}
 			</div>
 		);
 	}
@@ -134,7 +152,7 @@ const PostDetail = () => {
 		return (
 			<div>
 				<form onSubmit={handleDeletePost}>
-					<button className="btn btn-danger">Delete</button>
+					<button className="btn btn-outline-danger btn-sm">Delete</button>
 				</form>
 			</div>
 		);
@@ -146,21 +164,35 @@ const PostDetail = () => {
 
 	function linkToProfile(post) {
 		return (
-			<div className="PostCard-Header">
-				<Avatar className="PostCard-Avatar" alt={username} src={profileImage} />
-				<Link to={`/profile`} style={{ textDecoration: 'none' }}>
-					<h5 className="PostCard-Username">{username}</h5>
-				</Link>
+			<div className="PostDetail-Header container">
+				<div className="row">
+					<div className="col-2 me-4">
+						<Avatar
+							className="PostDetail-Avatar"
+							alt={username}
+							src={profileImage}
+						/>
+					</div>
+					<div className="col-6 mt-1">
+						<Link to={`/profile`} style={{ textDecoration: 'none' }}>
+							<h5 className="PostDetail-Username">{username}</h5>
+						</Link>
+					</div>
+				</div>
 			</div>
 		);
 	}
 
 	function linkToUser(post) {
 		return (
-			<div className="PostCard-Header">
-				<Avatar className="PostCard-Avatar" alt={username} src={profileImage} />
+			<div className="PostDetail-Header">
+				<Avatar
+					className="PostDetail-Avatar"
+					alt={username}
+					src={profileImage}
+				/>
 				<Link to={`/users/${username}`} style={{ textDecoration: 'none' }}>
-					<h5 className="PostCard-Username">{username}</h5>
+					<h5 className="PostDetail-Username">{username}</h5>
 				</Link>
 			</div>
 		);
@@ -192,6 +224,11 @@ const PostDetail = () => {
 				{post.user[0].username === currentUser.username
 					? linkToProfile()
 					: linkToUser()}
+				<div className="col">
+					{currentUser.username === post.user[0].username
+						? postByCurrentUser()
+						: null}
+				</div>
 			</div>
 
 			{/* Post Body (Image, Likes, Comments, Comment Form, Date */}
@@ -204,33 +241,44 @@ const PostDetail = () => {
 					<Link to={`/posts/${id}/likes`}>{post.likes.length} Likes </Link>
 				</h4> */}
 
-				<h4 className="PostDetail-Caption">
-					<Link
-						to={`/users/${post.user[0].username}`}
-						style={{ textDecoration: 'none' }}
-						className="PostDetail-caption-username"
-					>
-						<strong>{post.user[0].username}</strong>
-					</Link>
-					<span className="PostCard-Caption">{post.caption}</span>
-				</h4>
+				{post.user[0].username === currentUser.username ? (
+					<h6 className="PostDetail-Caption">
+						<Link
+							to={`/profile`}
+							style={{ textDecoration: 'none' }}
+							className="PostDetail-caption-username"
+						>
+							<strong>{post.user[0].username}</strong>
+						</Link>
+						<span className="PostCard-Caption">{post.caption}</span>
+					</h6>
+				) : (
+					<h6 className="PostDetail-Caption">
+						<Link
+							to={`/users/${post.user[0].username}`}
+							style={{ textDecoration: 'none' }}
+							className="PostDetail-caption-username"
+						>
+							<strong>{post.user[0].username}</strong>
+						</Link>
+						<span className="PostCard-Caption">{post.caption}</span>
+					</h6>
+				)}
 
 				{/* map the comments*/}
 				{post.comments.map((comment) => (
-					<h5 key={comment.id} className="PostDetail-Comments">
+					<h6 key={comment.id} className="PostDetail-Comments">
 						{comment.username === currentUser.username
 							? linkToProfileFromComment(comment)
 							: linkToUserFromComment(comment)}
 						<span>{comment.comment}</span>
-					</h5>
+					</h6>
 				))}
 			</div>
-			<CommentForm postId={id} />
+			<div>
+				<CommentForm postId={id} />
+			</div>
 			<p className="PostDetail-Date">{date}</p>
-
-			{currentUser.username === post.user[0].username
-				? postByCurrentUser()
-				: null}
 		</div>
 	);
 };

@@ -33,29 +33,25 @@ const CommentForm = ({ postId }) => {
 
 	return (
 		<div className="CommentForm">
-			<div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4">
-				<div className="card">
-					<div className="card-body">
-						<form onSubmit={handleSubmit}>
-							<div className="mb-3">
-								<label className="form-label fw-bold" htmlFor="comment">
-									Comment
-								</label>
-								<input
-									id="comment"
-									name="comment"
-									type="text"
-									onChange={handleChange}
-									value={formData.comment}
-									autoComplete="off"
-									className="form-control"
-									required
-								/>
-							</div>
-							<button className="btn btn-primary float-end">Submit</button>
-						</form>
+			<div className="container ">
+				<form onSubmit={handleSubmit}>
+					<div className="input-group mb-3">
+						<input
+							id="comment"
+							name="comment"
+							type="text"
+							onChange={handleChange}
+							value={formData.comment}
+							autoComplete="off"
+							className="form-control"
+							placeholder="Add comment..."
+							required
+						/>
+						<div className="input-group-append">
+							<button className="btn btn-outline-primary">Post</button>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 	);

@@ -17,7 +17,7 @@ const Home = () => {
 				{currentUser ? (
 					<div>
 						<h3>
-							Welcome Back, {currentUser.firstName || currentUser.username}!
+							Welcome back, {currentUser.firstName || currentUser.username}!
 							<span>
 								<img
 									className="Home-VerifiedLogo"

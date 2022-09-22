@@ -3,7 +3,7 @@
 	width: fit-content;
 	margin-bottom: 40px;
 	background-color: #ffffff;
-	max-width: 500px;
+	max-width: 575px;
 	margin: auto;
 	border-radius: 10px;
 }
@@ -19,7 +19,7 @@
 .PostDetail-Header {
 	display: flex;
 	align-items: center;
-	padding: 12px 15px;
+	padding: 7px 10px;
 }
 
 .PostDetail-Avatar {
@@ -47,9 +47,15 @@
 .PostDetail-LikeBtn {
 	display: flex;
 	margin-right: 12px;
+	font-size: 12px;
 }
+
 .PostDetail-LikeCount {
 	margin-top: 5px;
+}
+
+.PostDetail-Caption {
+	margin-top: -12px;
 }
 
 .comment-user {
@@ -68,5 +74,6 @@
 .PostDetail-Date {
 	padding: 15px;
 	color: rgb(142, 156, 170);
-	font-size: 15px;
+	font-size: 14px;
+	margin-bottom: -1px;
 }
