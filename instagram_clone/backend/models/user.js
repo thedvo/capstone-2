@@ -502,9 +502,9 @@ class User {
 		);
 
 		const deleted_comment = result.rows[0];
-		if (!deleted_comment) {
-			throw new NotFoundError(`No comment with id: ${comment}`);
-		}
+		// if (!deleted_comment) {
+		// 	throw new NotFoundError(`No comment with id: ${comment}`);
+		// }
 	}
 
 	/************************************************************************************************************************************** */
