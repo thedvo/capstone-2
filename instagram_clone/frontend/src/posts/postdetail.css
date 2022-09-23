@@ -70,3 +70,9 @@
 	font-size: 14px;
 	margin-bottom: -1px;
 }
+
+.Comment-DeleteBtn {
+	font-size: 10px;
+	padding: 3px;
+	width: 25px;
+}

@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
 import UserContext from '../UserContext';
-import { useHistory } from 'react-router';
 import igCloneApi from '../Api';
 
 import './CommentForm.css';
 
-const CommentForm = ({ comments, setComments, postId }) => {
+const CommentForm = ({ comments, setComments, postId, setHasCommented }) => {
 	const { currentUser } = useContext(UserContext);
 
 	const INITIAL_STATE = {
@@ -13,7 +12,6 @@ const CommentForm = ({ comments, setComments, postId }) => {
 	};
 
 	const [formData, setFormData] = useState(INITIAL_STATE);
-	const history = useHistory();
 
 	console.debug('CommentForm', 'formData=', formData);
 
@@ -30,8 +28,10 @@ const CommentForm = ({ comments, setComments, postId }) => {
 			formData
 		);
 
+		setHasCommented(true);
 		setComments([...comments, newComment]);
 		setFormData(INITIAL_STATE);
+		setHasCommented(false);
 		// console.log('SUCCESS! Added a comment.');
 	}
 

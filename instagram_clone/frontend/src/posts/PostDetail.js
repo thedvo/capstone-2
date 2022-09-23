@@ -48,7 +48,9 @@ const PostDetail = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [profileImage, setProfileImage] = useState();
 	const [username, setUsername] = useState();
-	const [comments, setComments] = useState();
+	const [comments, setComments] = useState([]);
+	const [hasCommented, setHasCommented] = useState();
+	const [hasDeletedComment, setHasDeletedComment] = useState();
 
 	// when route renders, make a request to get the post.
 	useEffect(() => {
@@ -63,9 +65,10 @@ const PostDetail = () => {
 			setProfileImage(post.user[0].profileImage);
 			setUsername(post.user[0].username);
 			setComments(post.comments);
+			setHasDeletedComment(false);
 		}
 		getPost();
-	}, [id, liked, unliked, comments]);
+	}, [id, liked, unliked, hasCommented, hasDeletedComment]);
 
 	if (isLoading) {
 		return (
@@ -216,6 +219,12 @@ const PostDetail = () => {
 		);
 	}
 
+	async function handleDeleteComment(e, commentId) {
+		await igCloneApi.deleteComment(id, currentUser.username, commentId);
+		// will set state for 'hasDeletedComment' from false to true. This will trigger the useEffect for GET request to get the Post.
+		setHasDeletedComment(true);
+	}
+
 	return (
 		<div className="PostDetail">
 			{/* Post Header (avatar + username) */}
@@ -262,12 +271,29 @@ const PostDetail = () => {
 
 				{/* map the comments*/}
 				{post.comments.map((comment) => (
-					<h6 key={comment.id} className="PostDetail-Comments">
-						{comment.username === currentUser.username
-							? linkToProfileFromComment(comment)
-							: linkToUserFromComment(comment)}
-						<span>{comment.comment}</span>
-					</h6>
+					<div className="row" key={comment.commentId}>
+						<div className="col-10">
+							<h6 className="PostDetail-Comments">
+								{comment.username === currentUser.username
+									? linkToProfileFromComment(comment)
+									: linkToUserFromComment(comment)}
+								<span>{comment.comment}</span>
+							</h6>
+						</div>
+						<div className="col-2">
+							{comment.username === currentUser.username ? (
+								<span>
+									<button
+										onClick={(e) => handleDeleteComment(e, comment.commentId)}
+										className="Comment-DeleteBtn btn btn-outline-dark btn-sm"
+									>
+										x
+									</button>
+									{/* https://bobbyhadz.com/blog/react-onclick-pass-event-and-parameter this link helped a lot in figuring out how to pass down the Comment ID to the handleDeleteComment function */}
+								</span>
+							) : null}
+						</div>
+					</div>
 				))}
 			</div>
 			<div>
@@ -275,6 +301,7 @@ const PostDetail = () => {
 					comments={comments}
 					setComments={setComments}
 					postId={id}
+					setHasCommented={setHasCommented}
 				/>
 			</div>
 			<p className="PostDetail-Date">{date}</p>
