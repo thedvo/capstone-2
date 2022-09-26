@@ -54,7 +54,7 @@ To see how the frontend links to and communicates with my backend API, refer to 
 
 
 ## **Database Schema**
-![IMAGE](schema.png)
+![Schema](images/schema.png)
 
 
 ## **Technologies Used**
