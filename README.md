@@ -1,5 +1,5 @@
 # **Instagram Clone**
-Try it out! ---> [Instagram Clone](https://igclone.surge.sh/).
+Try it out! ---> [Instagram Clone](https://dvo-insta-clone.surge.sh/).
 
 
 ## **Overview:**

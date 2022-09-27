@@ -128,12 +128,12 @@ const CurrentUserDetail = () => {
 				</div>
 				<div className="col-9">
 					<div className="row">
-						<div className="col-2">
+						<div className="col-3">
 							<div className="UserDetail-Username">
 								<h3>{user.username}</h3>
 							</div>
 						</div>
-						<div className="UserDetail-Details col-2">
+						<div className="UserDetail-Details col-3">
 							<div className="UserDetail-EditBtn">
 								<Link to={'/edit'}>
 									<button className="btn btn-outline-secondary">
@@ -142,7 +142,7 @@ const CurrentUserDetail = () => {
 								</Link>
 							</div>
 						</div>
-						<div className="col-3">
+						<div className="col-4">
 							<div className="UserDetail-DeleteBtn">
 								<form onSubmit={handleDeleteProfile}>
 									<button className="btn btn-outline-danger">
@@ -193,7 +193,7 @@ const CurrentUserDetail = () => {
 							))}
 						</div>
 					) : (
-						<p className="lead">User currently has no posts.</p>
+						<p className="NoPosts lead">User currently has no posts.</p>
 					)}
 				</div>
 			</div>

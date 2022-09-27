@@ -2,19 +2,23 @@
 	text-align: center;
 	margin: auto;
 	align-items: center;
-	margin-left: 70px;
+	margin-left: 75px;
 }
 
 .UserDetail-Avatar {
-	width: 200px;
-	height: 200px;
+	width: 150px;
+	height: 150px;
 	border-radius: 50%;
 	overflow: hidden;
 	object-fit: contain;
 	border: 0.5px solid rgb(185, 194, 202);
-	margin-left: 27px;
+	margin-left: 20px;
 	margin-bottom: 10px;
 	margin-top: -8px;
+}
+
+.UserDetail-Data {
+	margin-left: 8px;
 }
 
 .UserDetail-Title {
@@ -40,4 +44,8 @@
 .btn-outline-secondary {
 	/* font-weight: bold; */
 	color: rgb(104, 104, 104);
+}
+
+.NoPosts {
+	text-align: center;
 }
