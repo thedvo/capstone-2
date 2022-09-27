@@ -32,7 +32,7 @@ To like, comment, or delete a post (if the post is created by the logged in user
 
 Users can also navigate to their own profile and see a grid display of their posts along with their profile data (likes, followers, following). Here, logged in users can choose to edit their profile or delete their profile. If not the logged in user, users will see a "Follow" button as opposed to an edit/delete profile button. 
 
-![Logged-in User Profile](images/profile.png)
+![Logged User Profile](images/profile.png)
 ![Other User Profile](images/user_detail.png)
 
 Hovering over and clicking on the (likes, followers, following) will lead them to a grid display of their liked posts, list of followers, or list of people they are following, respectively. 
