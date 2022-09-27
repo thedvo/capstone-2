@@ -9,6 +9,8 @@ import CommentForm from '../forms/CommentForm';
 import './PostDetail.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Avatar from '@material-ui/core/Avatar';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 /* 
 Post Detail Component
@@ -79,15 +81,14 @@ const PostDetail = () => {
 	}
 
 	/** Show like or unlike button depending on the "liked" state. */
+
 	function likeButton() {
 		return (
 			<div className="PostDetail-Likes">
-				<button
-					className="PostDetail-LikeBtn btn btn-sm btn-primary"
+				<FavoriteBorderIcon
+					className="PostDetail-LikeBtn"
 					onClick={handleLike}
-				>
-					Like
-				</button>
+				/>
 				{post.likes.length === 1 ? (
 					<span>
 						<h5 className="PostDetail-LikeCount">{post.likes.length} Like</h5>
@@ -103,12 +104,7 @@ const PostDetail = () => {
 	function unLikeButton() {
 		return (
 			<div className="PostDetail-Likes">
-				<button
-					className="PostDetail-LikeBtn btn btn-sm btn-outline-danger"
-					onClick={handleUnlike}
-				>
-					Unlike
-				</button>
+				<FavoriteIcon className="PostDetail-UnLikeBtn" onClick={handleUnlike} />
 				{post.likes.length === 1 ? (
 					<span>
 						<h5 className="PostDetail-LikeCount">{post.likes.length} Like</h5>

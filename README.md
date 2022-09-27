@@ -28,7 +28,7 @@ Posts on the main feed will display the username, image, and caption.
 
 To like, comment, or delete a post (if the post is created by the logged in user), the user can click into a Link which is embedded in each individual post on the main feed to see more details. 
 
-![Post Detail](images/post_detail.png)
+![Post Detail](images/postdetail.png)
 
 Users can also navigate to their own profile and see a grid display of their posts along with their profile data (likes, followers, following). Here, logged in users can choose to edit their profile or delete their profile. If not the logged in user, users will see a "Follow" button as opposed to an edit/delete profile button. 
 

@@ -7,6 +7,7 @@ import SimplePostCard from '../posts/SimplePostCard';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CurrentUserDetail.css';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 const CurrentUserDetail = () => {
 	const { currentUser } = useContext(UserContext);
@@ -14,6 +15,7 @@ const CurrentUserDetail = () => {
 
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isHovering, setIsHovering] = useState(false);
 
 	useEffect(() => {
 		async function getUser() {
@@ -32,6 +34,11 @@ const CurrentUserDetail = () => {
 			</p>
 		);
 	}
+
+	const handleMouseOver = () => {
+		let toggle = isHovering === true ? false : true;
+		setIsHovering(toggle);
+	};
 
 	function noLikes() {
 		return (
@@ -129,7 +136,7 @@ const CurrentUserDetail = () => {
 				<div className="col-9">
 					<div className="row">
 						<div className="col-3">
-							<div className="UserDetail-Username">
+							<div className="CurrentUserDetail-Username">
 								<h3>{user.username}</h3>
 							</div>
 						</div>
@@ -142,37 +149,44 @@ const CurrentUserDetail = () => {
 								</Link>
 							</div>
 						</div>
-						<div className="col-4">
-							<div className="UserDetail-DeleteBtn">
-								<form onSubmit={handleDeleteProfile}>
-									<button className="btn btn-outline-danger">
-										Delete Profile
-									</button>
-								</form>
+						<div className="col-3">
+							<div className="UserDetail-delete-toggle">
+								<div onClick={handleMouseOver}>
+									<MoreHorizIcon />
+									{isHovering && (
+										<div className="UserDetail-DeleteBtn">
+											<form onSubmit={handleDeleteProfile}>
+												<button className="btn btn-danger btn-sm">
+													Delete User
+												</button>
+											</form>
+										</div>
+									)}
+								</div>
 							</div>
 						</div>
 					</div>
-					<div className="UserDetail-Data row mt-4">
-						<div className="col-2">
+					<div className="CurrentUserDetail-Data row mt-4">
+						<div className="col-3">
 							{user.likes.length > 0 ? hasLikes() : noLikes()}
 						</div>
-						<div className="col-2">
+						<div className="col-3">
 							{user.followers.length > 0 ? hasFollowers() : noFollowers()}
 						</div>
-						<div className="col-2">
+						<div className="col-3">
 							{user.following.length > 0 ? hasFollowing() : noFollowing()}
 						</div>
 					</div>
 
 					<div className="row mt-2">
-						<h5 className="UserDetail-FullName">
+						<h5 className="Current-UserDetail-FullName">
 							{user.firstName} {user.lastName}
 						</h5>
 					</div>
 
 					<div className="row">
 						<div className="col-9">
-							<p className="UserDetail-Bio">{user.bio}</p>
+							<p className="Current-UserDetail-Bio">{user.bio}</p>
 						</div>
 					</div>
 				</div>

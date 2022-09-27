@@ -45,8 +45,8 @@ function Nav({ logout }) {
 						></img>
 					</NavLink>
 				</li>
-				<li className="nav-item">
-					<Link className="nav-link mt-2" to="/" onClick={logout}>
+				<li className="nav-logout nav-item">
+					<Link className="nav-link mt-1" to="/" onClick={logout}>
 						Logout {currentUser.firstName || currentUser.username}
 					</Link>
 				</li>

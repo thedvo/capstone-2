@@ -41,10 +41,20 @@
 	font-size: 12px;
 	height: 30px;
 	margin-top: 2px;
+	color: red;
+}
+
+.PostDetail-UnLikeBtn {
+	margin-right: 12px;
+	font-size: 12px;
+	height: 30px;
+	margin-top: 2px;
+	color: red;
 }
 
 .PostDetail-LikeCount {
-	margin-top: 5px;
+	margin-top: 4px;
+	font-size: 15px;
 }
 
 .PostDetail-Caption {

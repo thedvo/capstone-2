@@ -6,8 +6,8 @@
 }
 
 .UserDetail-Avatar {
-	width: 150px;
-	height: 150px;
+	width: 175px;
+	height: 175px;
 	border-radius: 50%;
 	overflow: hidden;
 	object-fit: contain;
@@ -16,9 +16,12 @@
 	margin-bottom: 10px;
 	margin-top: -8px;
 }
+.CurrentUserDetail-Username {
+	margin-left: 20px;
+}
 
-.UserDetail-Data {
-	margin-left: 8px;
+.CurrentUserDetail-Data {
+	margin-left: -10px;
 }
 
 .UserDetail-Title {
@@ -31,13 +34,13 @@
 	font-size: 18px;
 }
 
-.UserDetail-FullName {
+.Current-UserDetail-FullName {
 	text-align: left;
-	margin-left: 35px;
+	margin-left: 54px;
 }
 
-.UserDetail-Bio {
-	margin-left: 36px;
+.Current-UserDetail-Bio {
+	margin-left: 55px;
 	text-align: left;
 }
 
@@ -48,4 +51,15 @@
 
 .NoPosts {
 	text-align: center;
+}
+
+.UserDetail-delete-toggle {
+	margin-top: 5px;
+}
+.UserDetail-DeleteBtn {
+	margin-top: 10px;
+	font-size: 12px;
+	position: absolute;
+	z-index: 2;
+	transform: translate(130px, -30px);
 }

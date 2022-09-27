@@ -178,14 +178,14 @@ const UserDetail = () => {
 							</div>
 						</div>
 					</div>
-					<div className="row mt-4">
-						<div className="col-2">
+					<div className="UserDetail-Data row mt-4">
+						<div className="col-3">
 							{user.likes.length > 0 ? hasLikes() : noLikes()}
 						</div>
-						<div className="col-2">
+						<div className="col-3">
 							{user.following.length > 0 ? hasFollowing() : noFollowing()}
 						</div>
-						<div className="col-2">
+						<div className="col-3">
 							{user.followers.length > 0 ? hasFollowers() : noFollowers()}
 						</div>
 					</div>
